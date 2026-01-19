@@ -1,0 +1,102 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "CostHawk Documentation",
+  "colors": {
+    "primary": "#1C82B4",
+    "light": "#4AAAD6",
+    "dark": "#166A94"
+  },
+  "favicon": "/logo/costhawk-logo.png",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Features",
+            "pages": [
+              "features/usage-tracking",
+              "features/savings",
+              "features/alerts",
+              "features/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/overview",
+              "api-reference/authentication",
+              "api-reference/usage",
+              "api-reference/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "MCP Server",
+        "groups": [
+          {
+            "group": "MCP Server",
+            "pages": [
+              "mcp-server/overview",
+              "mcp-server/installation",
+              "mcp-server/tools",
+              "mcp-server/examples"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/costhawkai",
+          "icon": "github"
+        },
+        {
+          "anchor": "Community",
+          "href": "https://discord.gg/costhawk",
+          "icon": "discord"
+        }
+      ]
+    }
+  },
+  "logo": {
+    "light": "/logo/costhawk-logo.png",
+    "dark": "/logo/costhawk-logo.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@costhawk.ai"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://costhawk.ai/dashboard"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/costhawkai",
+      "github": "https://github.com/costhawkai"
+    }
+  }
+}
