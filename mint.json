@@ -1,0 +1,91 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "CostHawk Documentation",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#1C82B4",
+    "light": "#4CA6D6",
+    "dark": "#1C82B4",
+    "anchors": {
+      "from": "#1C82B4",
+      "to": "#0EA5E9"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:support@costhawk.ai"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://costhawk.ai/dashboard"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "MCP Server",
+      "url": "mcp-server"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/costhawkai"
+    },
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.gg/costhawk"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        "quickstart",
+        "authentication"
+      ]
+    },
+    {
+      "group": "Features",
+      "pages": [
+        "features/usage-tracking",
+        "features/savings",
+        "features/alerts",
+        "features/webhooks"
+      ]
+    },
+    {
+      "group": "MCP Server",
+      "pages": [
+        "mcp-server/overview",
+        "mcp-server/installation",
+        "mcp-server/tools",
+        "mcp-server/examples"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/overview",
+        "api-reference/authentication",
+        "api-reference/usage",
+        "api-reference/webhooks"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://x.com/costhawkai",
+    "github": "https://github.com/costhawkai"
+  }
+}

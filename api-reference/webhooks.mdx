@@ -1,0 +1,85 @@
+---
+title: Webhook Endpoints
+description: "API endpoints for managing webhooks"
+---
+
+## List Webhooks
+
+Get all configured webhooks.
+
+```
+GET /api/mcp/webhooks
+```
+
+### Response
+
+```json
+[
+  {
+    "id": "wh_abc123",
+    "name": "Slack Alerts",
+    "url": "https://hooks.slack.com/services/...",
+    "type": "SLACK",
+    "events": ["COST_SPIKE", "BUDGET_WARNING"],
+    "enabled": true,
+    "createdAt": "2026-01-15T10:00:00Z"
+  }
+]
+```
+
+---
+
+## Create Webhook
+
+Create a new webhook for receiving alerts.
+
+```
+POST /api/mcp/webhooks
+```
+
+### Request Body
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `name` | string | Yes | Webhook name |
+| `url` | string | Yes | Webhook URL |
+| `type` | string | Yes | `SLACK`, `DISCORD`, `TEAMS`, `PAGERDUTY`, `CUSTOM` |
+| `events` | array | Yes | Events to subscribe to |
+| `secret` | string | No | Secret for signature verification |
+
+### Event Types
+
+- `COST_SPIKE` - Unusual increase in spending
+- `BUDGET_WARNING` - Approaching budget threshold
+- `BUDGET_EXCEEDED` - Budget limit exceeded
+- `UNUSUAL_ACTIVITY` - Anomalous patterns detected
+- `ERROR_SPIKE` - Increase in API errors
+- `RATE_LIMIT` - Rate limit warnings
+
+### Example
+
+```bash
+curl -X POST "https://costhawk.ai/api/mcp/webhooks" \
+  -H "Authorization: Bearer ch_sk_your_token" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Slack Budget Alerts",
+    "url": "https://hooks.slack.com/services/T00/B00/xxx",
+    "type": "SLACK",
+    "events": ["BUDGET_WARNING", "BUDGET_EXCEEDED"]
+  }'
+```
+
+### Response
+
+```json
+{
+  "id": "wh_xyz789",
+  "name": "Slack Budget Alerts",
+  "url": "https://hooks.slack.com/services/T00/B00/xxx",
+  "type": "SLACK",
+  "events": ["BUDGET_WARNING", "BUDGET_EXCEEDED"],
+  "enabled": true,
+  "createdAt": "2026-01-19T15:00:00Z"
+}
+```

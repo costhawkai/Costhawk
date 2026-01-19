@@ -1,0 +1,156 @@
+---
+title: MCP Tools Reference
+description: "Complete reference for all CostHawk MCP tools"
+---
+
+## Usage Tools
+
+### costhawk_get_usage_summary
+
+Get a summary of your AI API usage and costs over a time period.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `period` | string | No | Preset: `last_24h`, `today`, `yesterday`, `last_7d`, `last_30d` |
+| `startDate` | string | No | Start date (ISO 8601) |
+| `endDate` | string | No | End date (ISO 8601) |
+| `format` | string | No | `markdown` (default) or `json` |
+
+**Example:**
+> "Show me my API usage for the last 7 days"
+
+---
+
+### costhawk_get_usage_by_tag
+
+Break down costs by metadata tags like project, environment, or team.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `tagKey` | string | Yes | Tag to group by (e.g., `project`, `environment`) |
+| `startDate` | string | No | Start date (ISO 8601) |
+| `endDate` | string | No | End date (ISO 8601) |
+| `limit` | number | No | Max results (1-100, default 20) |
+
+**Example:**
+> "Show me costs broken down by project tag"
+
+---
+
+## Savings Tools
+
+### costhawk_get_savings
+
+Show savings vs retail pricing for flat-rate subscriptions like Claude Max or OpenAI Pro.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `period` | string | No | `daily`, `weekly`, or `monthly` |
+| `date` | string | No | Anchor date (ISO 8601) |
+
+**Example:**
+> "Am I saving money with Claude Max this month?"
+
+---
+
+### costhawk_list_subscriptions
+
+List your active flat-rate subscriptions.
+
+**Example:**
+> "What subscriptions do I have configured?"
+
+---
+
+### costhawk_get_savings_breakdown
+
+Get per-model usage and retail cost breakdown.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `period` | string | No | `daily`, `weekly`, or `monthly` |
+| `date` | string | No | Anchor date (ISO 8601) |
+
+**Example:**
+> "Break down my savings by model"
+
+---
+
+## Monitoring Tools
+
+### costhawk_detect_anomalies
+
+Find cost spikes and unusual activity patterns.
+
+**Example:**
+> "Are there any cost anomalies I should know about?"
+
+---
+
+### costhawk_list_alerts
+
+View recent alerts including budget warnings, cost spikes, and anomaly notifications.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `limit` | number | No | Max alerts (1-100, default 20) |
+| `unreadOnly` | boolean | No | Show only unread alerts |
+
+**Example:**
+> "Show me my unread alerts"
+
+---
+
+## Webhook Tools
+
+### costhawk_list_webhooks
+
+List all configured webhooks for receiving cost alerts.
+
+**Example:**
+> "What webhooks do I have set up?"
+
+---
+
+### costhawk_create_webhook
+
+Create a new webhook to receive notifications.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `name` | string | Yes | Webhook name |
+| `url` | string | Yes | Webhook URL |
+| `type` | string | Yes | `slack`, `discord`, `teams`, `pagerduty`, or `custom` |
+| `events` | array | Yes | Events: `cost_spike`, `budget_alert`, `anomaly`, etc. |
+
+**Example:**
+> "Create a Slack webhook for budget alerts at https://hooks.slack.com/..."
+
+---
+
+## Pricing Tools
+
+### costhawk_get_model_pricing
+
+Look up current pricing for AI models.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `provider` | string | No | Filter by provider: `openai`, `anthropic`, `google`, etc. |
+
+**Example:**
+> "What's the current pricing for Claude Opus?"

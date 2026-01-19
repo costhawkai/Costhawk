@@ -1,0 +1,90 @@
+---
+title: API Overview
+description: "REST API for accessing your CostHawk data programmatically"
+---
+
+## Base URL
+
+```
+https://costhawk.ai/api
+```
+
+## Authentication
+
+All API requests require an access token in the `Authorization` header:
+
+```bash
+Authorization: Bearer ch_sk_your_token_here
+```
+
+Get your token from **Settings → Developer** in your CostHawk dashboard.
+
+## Response Format
+
+All responses are JSON:
+
+```json
+{
+  "data": { ... },
+  "error": null
+}
+```
+
+Error responses:
+
+```json
+{
+  "data": null,
+  "error": "Error message here"
+}
+```
+
+## Rate Limits
+
+| Plan | Requests/minute |
+|------|-----------------|
+| Free | 60 |
+| Pro | 300 |
+| Teams | 1000 |
+
+Rate limit headers are included in every response:
+- `X-RateLimit-Limit`
+- `X-RateLimit-Remaining`
+- `X-RateLimit-Reset`
+
+## Endpoints
+
+### Usage
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/mcp/usage/summary` | Get usage summary |
+| GET | `/mcp/usage/by-tag` | Get usage by tag |
+
+### Savings
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/mcp/savings` | Get savings summary |
+| GET | `/mcp/savings/breakdown` | Per-model breakdown |
+| GET | `/mcp/subscriptions` | List subscriptions |
+
+### Monitoring
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/mcp/anomalies` | Detect anomalies |
+| GET | `/mcp/alerts` | List alerts |
+
+### Webhooks
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/mcp/webhooks` | List webhooks |
+| POST | `/mcp/webhooks` | Create webhook |
+
+### Pricing
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/mcp/pricing` | Get model pricing |

@@ -1,0 +1,109 @@
+---
+title: Installation
+description: "Install the CostHawk MCP server for Claude Code and Claude Desktop"
+---
+
+## Claude Code (Recommended)
+
+### Quick Install
+
+Run this command to add CostHawk to Claude Code:
+
+<CodeGroup>
+
+```bash Global (All Projects)
+claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```
+
+```bash Current Project Only
+claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```
+
+</CodeGroup>
+
+Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer** in your CostHawk dashboard.
+
+### Manual Configuration
+
+Add to `~/.claude/.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "costhawk": {
+      "command": "npx",
+      "args": ["-y", "costhawk"],
+      "env": {
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
+Then restart Claude Code.
+
+## Claude Desktop
+
+### macOS
+
+Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "costhawk": {
+      "command": "npx",
+      "args": ["-y", "costhawk"],
+      "env": {
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
+### Windows
+
+Edit `%APPDATA%\Claude\claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "costhawk": {
+      "command": "npx",
+      "args": ["-y", "costhawk"],
+      "env": {
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
+Then restart Claude Desktop.
+
+## Verify Installation
+
+After restarting, ask Claude:
+
+> "What CostHawk tools are available?"
+
+Claude should list the available tools like `costhawk_get_usage_summary`, `costhawk_get_savings`, etc.
+
+## Updating
+
+The MCP server uses `npx -y costhawk` which automatically fetches the latest version. To force an update, clear the npx cache:
+
+```bash
+rm -rf ~/.npm/_npx
+```
+
+Then restart Claude Code/Desktop.
+
+## Environment Variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `COSTHAWK_API_KEY` | Yes | - | Your CostHawk access token |
+| `COSTHAWK_API_URL` | No | `https://costhawk.ai` | API base URL |

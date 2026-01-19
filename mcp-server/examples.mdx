@@ -1,0 +1,109 @@
+---
+title: Example Prompts
+description: "Real-world examples of using CostHawk with Claude"
+---
+
+## Usage Tracking
+
+<AccordionGroup>
+  <Accordion title="Daily usage check">
+    **Prompt:** "What's my AI API usage today?"
+
+    **What it does:** Returns total costs, API calls, and token usage for today, broken down by provider and model.
+  </Accordion>
+
+  <Accordion title="Weekly comparison">
+    **Prompt:** "Compare my usage this week vs last week"
+
+    **What it does:** Shows usage summaries for both periods so you can spot trends.
+  </Accordion>
+
+  <Accordion title="Provider breakdown">
+    **Prompt:** "Which provider am I spending the most on?"
+
+    **What it does:** Returns costs grouped by provider (OpenAI, Anthropic, etc.)
+  </Accordion>
+
+  <Accordion title="Project costs">
+    **Prompt:** "Show me costs broken down by project tag"
+
+    **What it does:** Groups usage by the `project` metadata tag to see per-project spending.
+  </Accordion>
+</AccordionGroup>
+
+## Savings Analysis
+
+<AccordionGroup>
+  <Accordion title="Subscription ROI">
+    **Prompt:** "Am I saving money with Claude Max?"
+
+    **What it does:** Compares your usage against retail pricing to show if your flat-rate subscription is worth it.
+  </Accordion>
+
+  <Accordion title="Monthly savings report">
+    **Prompt:** "Show my savings vs retail this month"
+
+    **What it does:** Shows total retail cost, subscription cost, and net savings for the current month.
+  </Accordion>
+
+  <Accordion title="Model-level breakdown">
+    **Prompt:** "Which models am I using the most under my subscription?"
+
+    **What it does:** Shows per-model usage and what that would cost at retail rates.
+  </Accordion>
+</AccordionGroup>
+
+## Monitoring & Alerts
+
+<AccordionGroup>
+  <Accordion title="Anomaly detection">
+    **Prompt:** "Are there any cost anomalies I should know about?"
+
+    **What it does:** Analyzes recent usage patterns and flags any unusual spikes or changes.
+  </Accordion>
+
+  <Accordion title="Check alerts">
+    **Prompt:** "Do I have any unread alerts?"
+
+    **What it does:** Lists recent alerts including budget warnings and cost spike notifications.
+  </Accordion>
+
+  <Accordion title="Set up Slack notifications">
+    **Prompt:** "Create a Slack webhook for budget alerts at https://hooks.slack.com/services/..."
+
+    **What it does:** Creates a new webhook that sends notifications to your Slack channel.
+  </Accordion>
+</AccordionGroup>
+
+## Pricing Lookups
+
+<AccordionGroup>
+  <Accordion title="Model pricing">
+    **Prompt:** "What's the current pricing for GPT-4o?"
+
+    **What it does:** Returns input/output pricing per million tokens and context window size.
+  </Accordion>
+
+  <Accordion title="Compare providers">
+    **Prompt:** "Compare Anthropic and OpenAI pricing"
+
+    **What it does:** Shows pricing for all models from both providers for comparison.
+  </Accordion>
+</AccordionGroup>
+
+## Combining Tools
+
+You can ask complex questions that use multiple tools:
+
+> "I'm spending more than usual this week. Can you check for anomalies and show me which project is driving the increase?"
+
+Claude will:
+1. Run anomaly detection
+2. Get usage by project tag
+3. Analyze and explain the results
+
+---
+
+<Tip>
+  The MCP server returns data in markdown format by default, making it easy for Claude to present nicely formatted tables and summaries.
+</Tip>

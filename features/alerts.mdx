@@ -1,0 +1,62 @@
+---
+title: Alerts & Anomalies
+description: "Get notified about cost spikes and unusual activity"
+---
+
+## Overview
+
+CostHawk monitors your usage patterns and alerts you when something unusual happens - before you get a surprise bill.
+
+## Alert Types
+
+| Type | Description |
+|------|-------------|
+| **Budget Warning** | Approaching a budget threshold (e.g., 80% of monthly budget) |
+| **Budget Exceeded** | Budget limit has been exceeded |
+| **Cost Spike** | Unusual increase in spending compared to baseline |
+| **Unusual Activity** | Anomalous usage patterns detected |
+| **Error Spike** | Sudden increase in API errors |
+| **Rate Limit** | Hitting provider rate limits |
+
+## Viewing Alerts
+
+### Dashboard
+
+The alerts page shows:
+- All recent alerts with severity indicators
+- Read/unread status
+- Detailed information about each alert
+
+### MCP Server
+
+> "List my unread alerts"
+
+> "Are there any cost anomalies?"
+
+## Anomaly Detection
+
+CostHawk compares your recent activity to your baseline usage patterns to detect:
+
+- **Cost spikes** - Sudden increases in spending
+- **Volume spikes** - Unusual number of API calls
+- **Model changes** - Shift to more expensive models
+- **Time anomalies** - Activity at unusual times
+
+## Notification Channels
+
+Get alerts delivered to:
+
+- **Email** - Default for all accounts
+- **Slack** - Via webhook integration
+- **Discord** - Via webhook integration
+- **Microsoft Teams** - Via webhook integration
+- **PagerDuty** - For on-call escalation
+- **Custom Webhooks** - Send to any URL
+
+## Setting Up Webhooks
+
+Via the dashboard or MCP server:
+
+> "Create a Slack webhook for budget alerts at https://hooks.slack.com/services/..."
+
+See [Webhooks](/features/webhooks) for detailed setup instructions.

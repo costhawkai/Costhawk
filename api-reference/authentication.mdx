@@ -1,0 +1,62 @@
+---
+title: API Authentication
+description: "How to authenticate with the CostHawk API"
+---
+
+## Access Tokens
+
+All API requests must include an access token in the `Authorization` header using the Bearer scheme.
+
+```bash
+curl -X GET "https://costhawk.ai/api/mcp/usage/summary" \
+  -H "Authorization: Bearer ch_sk_your_token_here" \
+  -H "Content-Type: application/json"
+```
+
+## Getting a Token
+
+1. Log into your [CostHawk dashboard](https://costhawk.ai/dashboard)
+2. Go to **Settings → Developer**
+3. Click **Create Token**
+4. Copy the token (displayed only once)
+
+## Token Format
+
+CostHawk tokens are prefixed with `ch_sk_` followed by a unique identifier:
+
+```
+ch_sk_XFDmvHtmzmwpbuh_JGnC9LTnkErUnB99aARwbPyo5-A
+```
+
+## Error Responses
+
+### 401 Unauthorized
+
+No token provided or token is invalid:
+
+```json
+{
+  "error": "No API key provided. You must first sign up at https://costhawk.ai to get an API key."
+}
+```
+
+### 403 Forbidden
+
+Token doesn't have permission for this resource:
+
+```json
+{
+  "error": "Insufficient permissions for this resource"
+}
+```
+
+## Security Best Practices
+
+<Warning>
+  Never expose your access token in client-side code, public repositories, or logs.
+</Warning>
+
+- Store tokens in environment variables
+- Use different tokens for dev/staging/production
+- Rotate tokens periodically
+- Revoke unused tokens immediately

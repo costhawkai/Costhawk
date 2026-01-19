@@ -1,0 +1,96 @@
+---
+title: Usage Endpoints
+description: "API endpoints for tracking usage and costs"
+---
+
+## Get Usage Summary
+
+Retrieve a summary of API usage and costs for a time period.
+
+```
+GET /api/mcp/usage/summary
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `startDate` | string | No | Start date (ISO 8601). Default: 30 days ago |
+| `endDate` | string | No | End date (ISO 8601). Default: now |
+
+### Response
+
+```json
+{
+  "totalCost": 45.23,
+  "totalCalls": 1250,
+  "totalInputTokens": 2500000,
+  "totalOutputTokens": 750000,
+  "byProvider": {
+    "anthropic": { "cost": 30.15, "calls": 800 },
+    "openai": { "cost": 15.08, "calls": 450 }
+  },
+  "byModel": {
+    "claude-3-5-sonnet": { "cost": 25.00, "calls": 600 },
+    "gpt-4o": { "cost": 15.08, "calls": 450 }
+  },
+  "period": {
+    "start": "2026-01-01T00:00:00Z",
+    "end": "2026-01-19T23:59:59Z"
+  }
+}
+```
+
+### Example
+
+```bash
+curl -X GET "https://costhawk.ai/api/mcp/usage/summary?startDate=2026-01-01" \
+  -H "Authorization: Bearer ch_sk_your_token"
+```
+
+---
+
+## Get Usage by Tag
+
+Break down usage and costs by a metadata tag.
+
+```
+GET /api/mcp/usage/by-tag
+```
+
+### Query Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `tagKey` | string | Yes | Tag key to group by (e.g., `project`, `environment`) |
+| `startDate` | string | No | Start date (ISO 8601) |
+| `endDate` | string | No | End date (ISO 8601) |
+| `limit` | number | No | Max results (1-100). Default: 20 |
+
+### Response
+
+```json
+[
+  {
+    "tag": "project",
+    "value": "chatbot",
+    "cost": 25.50,
+    "calls": 600,
+    "percentage": 56.4
+  },
+  {
+    "tag": "project",
+    "value": "search",
+    "cost": 19.73,
+    "calls": 650,
+    "percentage": 43.6
+  }
+]
+```
+
+### Example
+
+```bash
+curl -X GET "https://costhawk.ai/api/mcp/usage/by-tag?tagKey=project" \
+  -H "Authorization: Bearer ch_sk_your_token"
+```

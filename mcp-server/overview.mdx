@@ -1,0 +1,91 @@
+---
+title: MCP Server Overview
+description: "Query your CostHawk data directly from Claude Code"
+---
+
+The CostHawk MCP (Model Context Protocol) server enables AI assistants like Claude to query your cost data directly from the command line. No need to switch to a browser - just ask Claude about your API spending.
+
+## What is MCP?
+
+Model Context Protocol (MCP) is a standard for connecting AI assistants to external tools and data sources. CostHawk's MCP server lets Claude:
+
+- Check your API usage and costs
+- Analyze savings from flat-rate subscriptions
+- Detect cost anomalies
+- Manage webhooks and alerts
+- Look up model pricing
+
+## Installation
+
+<CodeGroup>
+
+```bash Global Installation (Recommended)
+claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```
+
+```bash Project-Only Installation
+claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```
+
+</CodeGroup>
+
+After installation, restart Claude Code to load the MCP server.
+
+## Available Tools
+
+| Tool | Description |
+|------|-------------|
+| `costhawk_get_usage_summary` | Get usage and cost summary for a date range |
+| `costhawk_get_usage_by_tag` | Break down costs by metadata tags |
+| `costhawk_detect_anomalies` | Find cost spikes and unusual patterns |
+| `costhawk_list_webhooks` | List configured alert webhooks |
+| `costhawk_create_webhook` | Set up new webhooks |
+| `costhawk_get_model_pricing` | Look up model pricing by provider |
+| `costhawk_list_alerts` | View alerts and notifications |
+| `costhawk_get_savings` | Show savings vs retail pricing |
+| `costhawk_list_subscriptions` | List active subscriptions |
+| `costhawk_get_savings_breakdown` | Per-model usage breakdown |
+
+<Card title="Full Tool Reference" icon="wrench" href="/mcp-server/tools">
+  See detailed documentation for each tool including parameters and examples.
+</Card>
+
+## Example Conversations
+
+**Check your usage:**
+> "What's my AI API usage this month?"
+
+**Analyze savings:**
+> "Am I saving money with my Claude Max subscription?"
+
+**Monitor costs:**
+> "Are there any cost anomalies I should know about?"
+
+**Set up alerts:**
+> "Create a Slack webhook for budget alerts"
+
+## Requirements
+
+- Node.js 18+
+- Claude Code or Claude Desktop
+- A CostHawk account with an access token
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Tool not found errors">
+    - Ensure Claude was restarted after adding the MCP server
+    - Verify the config file syntax is valid JSON
+    - Check that the server name is `costhawk`
+  </Accordion>
+  <Accordion title="Authentication failed">
+    - Verify your access token is correct
+    - Check the token is active in your CostHawk dashboard
+    - Make sure you've been approved from the waitlist
+  </Accordion>
+  <Accordion title="Connection refused">
+    - Ensure you have internet connectivity
+    - Check if costhawk.ai is accessible
+    - Verify no firewall is blocking the connection
+  </Accordion>
+</AccordionGroup>

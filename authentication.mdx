@@ -1,0 +1,83 @@
+---
+title: Authentication
+description: "How to authenticate with the CostHawk API and MCP server"
+---
+
+## Access Tokens
+
+CostHawk uses access tokens to authenticate requests to the API and MCP server. Tokens are scoped to your account and can be created and revoked from your dashboard.
+
+### Creating a Token
+
+1. Go to your [CostHawk dashboard](https://costhawk.ai/dashboard)
+2. Navigate to **Settings → Developer**
+3. Click **Create Token**
+4. Give your token a descriptive name (e.g., "Claude Code - Work Laptop")
+5. Copy the token immediately - you won't be able to see it again
+
+<Info>
+  Tokens are prefixed with `ch_sk_` to help you identify them in your code and configs.
+</Info>
+
+### Token Security
+
+<Warning>
+  **Never share your access tokens or commit them to version control.**
+</Warning>
+
+Best practices:
+- Use environment variables to store tokens
+- Create separate tokens for different environments (dev, staging, prod)
+- Rotate tokens periodically
+- Revoke tokens you no longer need
+
+### Revoking a Token
+
+If a token is compromised or no longer needed:
+
+1. Go to **Settings → Developer** in your dashboard
+2. Find the token in the list
+3. Click the trash icon to revoke it
+
+Revoked tokens are immediately invalidated and cannot be used for future requests.
+
+## Using Tokens
+
+### MCP Server
+
+Set the `COSTHAWK_API_KEY` environment variable in your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "costhawk": {
+      "command": "npx",
+      "args": ["-y", "costhawk"],
+      "env": {
+        "COSTHAWK_API_KEY": "ch_sk_your_token_here"
+      }
+    }
+  }
+}
+```
+
+### API Requests
+
+Include the token in the `Authorization` header:
+
+```bash
+curl -X GET "https://costhawk.ai/api/usage/summary" \
+  -H "Authorization: Bearer ch_sk_your_token_here"
+```
+
+## Error Responses
+
+| Status Code | Meaning |
+|-------------|---------|
+| `401` | Missing or invalid token |
+| `403` | Token doesn't have required permissions |
+| `429` | Rate limit exceeded |
+
+<Tip>
+  If you see authentication errors, verify your token is active in the dashboard under **Settings → Developer**.
+</Tip>

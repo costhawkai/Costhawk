@@ -1,0 +1,130 @@
+---
+title: Quickstart
+description: "Get up and running with CostHawk in 5 minutes"
+---
+
+## Prerequisites
+
+- A CostHawk account (join the [waitlist](https://costhawk.ai) if you don't have one)
+- Claude Code or Claude Desktop installed
+
+## Step 1: Get Your Access Token
+
+1. Log into your [CostHawk dashboard](https://costhawk.ai/dashboard)
+2. Navigate to **Settings → Developer**
+3. Click **Create Token**
+4. Copy the token (you'll only see it once)
+
+<Warning>
+  Keep your access token secret. Never commit it to version control or share it publicly.
+</Warning>
+
+## Step 2: Add to Claude Code
+
+The fastest way to get started is with the one-liner command:
+
+<CodeGroup>
+
+```bash Global (All Projects)
+claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```
+
+```bash Current Project Only
+claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```
+
+</CodeGroup>
+
+Replace `YOUR_TOKEN_HERE` with your access token from Step 1.
+
+## Step 3: Restart Claude Code
+
+After adding the MCP server, restart Claude Code to load the new tools.
+
+## Step 4: Start Using CostHawk
+
+You can now ask Claude about your API costs:
+
+<AccordionGroup>
+  <Accordion title="Usage Queries">
+    - "What's my AI API usage this month?"
+    - "Show me costs broken down by provider"
+    - "How many tokens have I used today?"
+  </Accordion>
+  <Accordion title="Savings Analysis">
+    - "Am I saving money with Claude Max?"
+    - "Show my savings vs retail pricing"
+    - "Break down my savings by model"
+  </Accordion>
+  <Accordion title="Alerts & Monitoring">
+    - "Are there any cost anomalies I should know about?"
+    - "List my unread alerts"
+    - "Create a Slack webhook for budget alerts"
+  </Accordion>
+</AccordionGroup>
+
+## Alternative: Manual Configuration
+
+If you prefer to configure manually, add this to your MCP config file:
+
+<Tabs>
+  <Tab title="Claude Code">
+    Edit `~/.claude/.mcp.json`:
+    ```json
+    {
+      "mcpServers": {
+        "costhawk": {
+          "command": "npx",
+          "args": ["-y", "costhawk"],
+          "env": {
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Desktop (macOS)">
+    Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
+    ```json
+    {
+      "mcpServers": {
+        "costhawk": {
+          "command": "npx",
+          "args": ["-y", "costhawk"],
+          "env": {
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Desktop (Windows)">
+    Edit `%APPDATA%\Claude\claude_desktop_config.json`:
+    ```json
+    {
+      "mcpServers": {
+        "costhawk": {
+          "command": "npx",
+          "args": ["-y", "costhawk"],
+          "env": {
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="MCP Tools" icon="wrench" href="/mcp-server/tools">
+    Explore all available MCP tools and their parameters
+  </Card>
+  <Card title="Usage Tracking" icon="chart-line" href="/features/usage-tracking">
+    Learn about usage tracking and analytics
+  </Card>
+</CardGroup>

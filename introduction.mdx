@@ -1,0 +1,84 @@
+---
+title: Welcome to CostHawk
+description: "Track, monitor, and optimize your AI API costs across all providers"
+---
+
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.svg"
+  alt="CostHawk Hero"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.svg"
+  alt="CostHawk Hero"
+/>
+
+## What is CostHawk?
+
+CostHawk is an AI API cost monitoring platform that helps developers and teams track their spend across multiple providers like OpenAI, Anthropic, Google, and more.
+
+Whether you're using Claude Max, OpenAI Pro, or pay-as-you-go API access, CostHawk gives you visibility into your usage and helps you understand if your flat-rate subscriptions are actually saving you money.
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card
+    title="Usage Tracking"
+    icon="chart-line"
+    href="/features/usage-tracking"
+  >
+    Monitor API calls, tokens, and costs across all your AI providers in real-time.
+  </Card>
+  <Card
+    title="Savings Calculator"
+    icon="piggy-bank"
+    href="/features/savings"
+  >
+    See if your flat-rate subscriptions (Claude Max, OpenAI Pro) are worth it.
+  </Card>
+  <Card
+    title="Alerts & Anomalies"
+    icon="bell"
+    href="/features/alerts"
+  >
+    Get notified about cost spikes, budget warnings, and unusual activity.
+  </Card>
+  <Card
+    title="MCP Server"
+    icon="terminal"
+    href="/mcp-server/overview"
+  >
+    Query your CostHawk data directly from Claude Code or Claude Desktop.
+  </Card>
+</CardGroup>
+
+## Quick Start
+
+Get started with CostHawk in under 5 minutes:
+
+<Steps>
+  <Step title="Join the Waitlist">
+    Sign up at [costhawk.ai](https://costhawk.ai) to request early access.
+  </Step>
+  <Step title="Get Your Access Token">
+    Once approved, go to **Settings → Developer → Create Token** in your dashboard.
+  </Step>
+  <Step title="Install the MCP Server">
+    Add CostHawk to Claude Code with one command:
+    ```bash
+    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+    ```
+  </Step>
+  <Step title="Start Tracking">
+    Ask Claude: "What's my AI API usage this month?"
+  </Step>
+</Steps>
+
+## Why CostHawk?
+
+- **Multi-provider support** - Track OpenAI, Anthropic, Google, and more in one place
+- **Flat-rate savings analysis** - Know if Claude Max or OpenAI Pro is worth it for you
+- **MCP integration** - Query your costs directly from Claude Code
+- **Real-time alerts** - Never be surprised by an API bill again
+- **Developer-first** - Built by developers, for developers

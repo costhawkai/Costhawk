@@ -1,0 +1,74 @@
+---
+title: Webhooks
+description: "Send alerts to Slack, Discord, Teams, and more"
+---
+
+## Overview
+
+Webhooks let you receive CostHawk alerts in your preferred communication channels - Slack, Discord, Microsoft Teams, PagerDuty, or any custom endpoint.
+
+## Supported Platforms
+
+| Platform | Payload Format |
+|----------|----------------|
+| Slack | Slack Block Kit |
+| Discord | Discord Embed |
+| Microsoft Teams | Adaptive Card |
+| PagerDuty | Events API v2 |
+| Custom | JSON payload |
+
+## Creating a Webhook
+
+### Via Dashboard
+
+1. Go to **Settings → Webhooks**
+2. Click **Add Webhook**
+3. Enter a name and URL
+4. Select the platform type
+5. Choose which events to subscribe to
+6. Save
+
+### Via MCP Server
+
+> "Create a Slack webhook for budget alerts at https://hooks.slack.com/services/T00/B00/xxx"
+
+## Event Types
+
+Subscribe to the events you care about:
+
+| Event | Description |
+|-------|-------------|
+| `cost_spike` | Unusual increase in spending |
+| `budget_warning` | Approaching budget threshold |
+| `budget_exceeded` | Budget limit exceeded |
+| `anomaly` | Unusual activity detected |
+| `error_spike` | Increase in API errors |
+| `rate_limit` | Rate limit warnings |
+
+## Slack Setup
+
+1. Go to your Slack workspace settings
+2. Create a new Incoming Webhook
+3. Select a channel
+4. Copy the webhook URL
+5. Add to CostHawk with type `slack`
+
+## Discord Setup
+
+1. Go to your Discord server settings
+2. Navigate to Integrations → Webhooks
+3. Create a new webhook
+4. Copy the webhook URL
+5. Add to CostHawk with type `discord`
+
+## Testing Webhooks
+
+After creating a webhook, use the **Test** button in the dashboard to send a sample notification and verify your setup.
+
+## Managing Webhooks
+
+### List webhooks
+> "What webhooks do I have configured?"
+
+### In the dashboard
+Go to **Settings → Webhooks** to view, edit, enable/disable, or delete webhooks.
