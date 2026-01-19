@@ -2,17 +2,17 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "CostHawk Documentation",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/costhawk-logo.png",
+    "light": "/logo/costhawk-logo.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/costhawk-logo.png",
   "colors": {
     "primary": "#1C82B4",
-    "light": "#4CA6D6",
-    "dark": "#1C82B4",
+    "light": "#4AAAD6",
+    "dark": "#166A94",
     "anchors": {
       "from": "#1C82B4",
-      "to": "#0EA5E9"
+      "to": "#4AAAD6"
     }
   },
   "topbarLinks": [
