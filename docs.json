@@ -3,9 +3,16 @@
   "theme": "mint",
   "name": "CostHawk Documentation",
   "colors": {
-    "primary": "#1C82B4",
-    "light": "#4AAAD6",
-    "dark": "#166A94"
+    "primary": "#1BCF7A",
+    "light": "#34D399",
+    "dark": "#10B981",
+    "background": {
+      "dark": "#0A0A0B"
+    }
+  },
+  "styling": {
+    "codeblocks": "dark",
+    "eyebrow": "uppercase"
   },
   "favicon": "/logo/costhawk-logo.png",
   "navigation": {

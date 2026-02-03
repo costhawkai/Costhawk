@@ -91,6 +91,53 @@ description: "Real-world examples of using CostHawk with Claude"
   </Accordion>
 </AccordionGroup>
 
+## Claude Code & Codex Sync
+
+<AccordionGroup>
+  <Accordion title="Sync Claude Code usage">
+    **Prompt:** "Sync my Claude Code usage"
+
+    **What it does:** Parses local `~/.claude/projects` files and uploads usage metadata (tokens, models, timestamps) to your CostHawk dashboard.
+  </Accordion>
+
+  <Accordion title="Preview before syncing">
+    **Prompt:** "Preview my Claude Code sync with dryRun enabled"
+
+    **What it does:** Shows exactly what data would be sent without making any network requests. Great for transparency.
+  </Accordion>
+
+  <Accordion title="Sync Codex CLI usage">
+    **Prompt:** "Sync my Codex sessions"
+
+    **What it does:** Parses local `~/.codex/sessions` files and uploads usage metadata. Codex sync can be disabled with `COSTHAWK_SYNC_CODEX=false`.
+  </Accordion>
+
+  <Accordion title="Combined sync">
+    **Prompt:** "Sync all my local AI usage data"
+
+    **What it does:** Syncs both Claude Code and Codex CLI usage in one operation.
+  </Accordion>
+</AccordionGroup>
+
+## Privacy & Transparency
+
+<AccordionGroup>
+  <Accordion title="See what files are accessed">
+    Run in terminal:
+    ```bash
+    npx costhawk --what-we-read
+    ```
+
+    **What it does:** Lists all file paths the MCP server would access, without making network requests.
+  </Accordion>
+
+  <Accordion title="Preview any sync payload">
+    **Prompt:** "Show me what would be sent if I sync my usage, but don't actually send it"
+
+    **What it does:** Uses `dryRun: true` to return the full payload that would be uploaded, so you can verify nothing sensitive is included.
+  </Accordion>
+</AccordionGroup>
+
 ## Combining Tools
 
 You can ask complex questions that use multiple tools:
@@ -102,8 +149,19 @@ Claude will:
 2. Get usage by project tag
 3. Analyze and explain the results
 
+> "Sync my Claude Code usage, then show me my total spending this month including the new data"
+
+Claude will:
+1. Sync local Claude Code data
+2. Fetch updated usage summary
+3. Present a comprehensive monthly report
+
 ---
 
 <Tip>
   The MCP server returns data in markdown format by default, making it easy for Claude to present nicely formatted tables and summaries.
 </Tip>
+
+<Info>
+  **Privacy note:** All sync operations only send usage metadata (tokens, models, timestamps). Your code, prompts, and file paths are never transmitted.
+</Info>

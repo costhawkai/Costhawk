@@ -1,6 +1,6 @@
 ---
 title: MCP Server Overview
-description: "Query your CostHawk data directly from Claude Code"
+description: "Query your CostHawk data directly from Claude Code - with privacy-first design"
 ---
 
 The CostHawk MCP (Model Context Protocol) server enables AI assistants like Claude to query your cost data directly from the command line. No need to switch to a browser - just ask Claude about your API spending.
@@ -11,9 +11,39 @@ Model Context Protocol (MCP) is a standard for connecting AI assistants to exter
 
 - Check your API usage and costs
 - Analyze savings from flat-rate subscriptions
+- Sync Claude Code and Codex CLI usage data
 - Detect cost anomalies
 - Manage webhooks and alerts
 - Look up model pricing
+
+## Trust & Privacy
+
+CostHawk was built for developers who care about transparency. We believe you should know exactly what runs on your machine.
+
+<CardGroup cols={2}>
+  <Card title="Local-First Parsing" icon="shield">
+    We compute usage locally from `~/.claude/projects` and `~/.codex/sessions` before anything leaves your machine.
+  </Card>
+  <Card title="No Prompt Content" icon="eye-slash">
+    Only usage metadata is sent: token counts, models, timestamps, and hashed project IDs — never your code or prompts.
+  </Card>
+  <Card title="Preview Before Upload" icon="file-lines">
+    Use `dryRun: true` to see exactly what would be sent, with payload previews for full transparency.
+  </Card>
+  <Card title="Opt-In Auto-Sync" icon="toggle-off">
+    Automatic uploads are off by default. Enable with `COSTHAWK_AUTO_SYNC=true` and disable Codex sync anytime.
+  </Card>
+</CardGroup>
+
+### See What We Read
+
+Run this command to see exactly which files CostHawk accesses:
+
+```bash
+npx costhawk --what-we-read
+```
+
+This prints all file paths the MCP server would access without making any network requests.
 
 ## Installation
 
@@ -45,6 +75,8 @@ After installation, restart Claude Code to load the MCP server.
 | `costhawk_get_savings` | Show savings vs retail pricing |
 | `costhawk_list_subscriptions` | List active subscriptions |
 | `costhawk_get_savings_breakdown` | Per-model usage breakdown |
+| `costhawk_sync_claude_code` | Sync Claude Code usage from local files |
+| `costhawk_sync_codex` | Sync OpenAI Codex CLI usage from local files |
 
 <Card title="Full Tool Reference" icon="wrench" href="/mcp-server/tools">
   See detailed documentation for each tool including parameters and examples.

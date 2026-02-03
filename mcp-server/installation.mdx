@@ -107,3 +107,77 @@ Then restart Claude Code/Desktop.
 |----------|----------|---------|-------------|
 | `COSTHAWK_API_KEY` | Yes | - | Your CostHawk access token |
 | `COSTHAWK_API_URL` | No | `https://costhawk.ai` | API base URL |
+| `COSTHAWK_AUTO_SYNC` | No | `false` | Enable automatic sync on tool calls |
+| `COSTHAWK_SYNC_CODEX` | No | `true` | Include Codex CLI data in syncs |
+
+## Trust & Privacy Features
+
+CostHawk is designed with transparency in mind. Here's how to verify what the MCP server does:
+
+### Preview Mode (Dry Run)
+
+Before syncing any data, you can preview exactly what would be sent:
+
+```
+"Sync my Claude Code usage with dryRun enabled"
+```
+
+This returns the full payload without making any network requests.
+
+### See What Files We Access
+
+Run this command to see all files CostHawk would read:
+
+```bash
+npx costhawk --what-we-read
+```
+
+**Output example:**
+```
+CostHawk MCP Server v1.3.3 - Files We Access
+
+Claude Code:
+  ~/.claude/projects/*/conversations.json
+  ~/.claude/projects/*/settings.json
+
+OpenAI Codex:
+  ~/.codex/sessions/*.json
+
+Note: We only read usage metadata (tokens, models, timestamps).
+We never read your code, prompts, or conversation content.
+```
+
+### Disable Codex Sync
+
+If you only want to sync Claude Code data:
+
+```json
+{
+  "mcpServers": {
+    "costhawk": {
+      "command": "npx",
+      "args": ["-y", "costhawk"],
+      "env": {
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+        "COSTHAWK_SYNC_CODEX": "false"
+      }
+    }
+  }
+}
+```
+
+### What Data We Send
+
+When you sync, CostHawk sends only:
+
+- **Token counts** - Input/output/cache tokens per session
+- **Model identifiers** - Which AI models were used
+- **Timestamps** - When sessions occurred
+- **Hashed project IDs** - For grouping (never actual project names or paths)
+- **Calculated costs** - Based on token counts and current pricing
+
+We **never** send:
+- Your code or files
+- Prompt content or conversations
+- File paths or project names
+- Any personally identifiable information

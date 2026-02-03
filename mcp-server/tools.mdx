@@ -154,3 +154,71 @@ Look up current pricing for AI models.
 
 **Example:**
 > "What's the current pricing for Claude Opus?"
+
+---
+
+## Local Sync Tools
+
+### costhawk_sync_claude_code
+
+Sync Claude Code usage from local `~/.claude/projects` files. This parses your local session data and uploads usage metadata only.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `dryRun` | boolean | No | Preview what would be sent without uploading |
+| `startDate` | string | No | Only sync sessions after this date |
+
+**Example:**
+> "Sync my Claude Code usage"
+
+**With dry run:**
+> "Preview my Claude Code sync payload"
+
+---
+
+### costhawk_sync_codex
+
+Sync OpenAI Codex CLI usage from local `~/.codex/sessions` files.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `dryRun` | boolean | No | Preview what would be sent without uploading |
+| `startDate` | string | No | Only sync sessions after this date |
+
+**Example:**
+> "Sync my Codex usage"
+
+<Note>
+  Codex sync can be disabled globally by setting `COSTHAWK_SYNC_CODEX=false` in your environment.
+</Note>
+
+---
+
+## Privacy Tools
+
+### What We Send
+
+When syncing local data, CostHawk only uploads usage metadata:
+
+```json
+{
+  "sessions": [
+    {
+      "sessionId": "hashed_abc123",
+      "projectId": "hashed_project_id",
+      "model": "claude-3-5-sonnet-20241022",
+      "inputTokens": 15420,
+      "outputTokens": 8230,
+      "cacheReadTokens": 5000,
+      "cacheCreationTokens": 1200,
+      "timestamp": "2025-02-03T10:30:00Z"
+    }
+  ]
+}
+```
+
+No code, prompts, file paths, or project names are ever sent.
