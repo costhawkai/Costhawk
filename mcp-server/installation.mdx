@@ -5,19 +5,19 @@ description: "Install the CostHawk MCP server for Claude Code and Claude Desktop
 
 ## Quick Setup (Recommended)
 
-One command to set up CostHawk globally with auto-sync enabled:
+One command to install CostHawk with auto-sync enabled:
 
 ```bash
-echo 'export COSTHAWK_API_KEY="YOUR_TOKEN_HERE"' >> ~/.zshrc && \
-echo 'export COSTHAWK_AUTO_SYNC=true' >> ~/.zshrc && \
-source ~/.zshrc && \
-claude mcp add -s user costhawk -- npx -y costhawk@latest
+claude mcp add -s user \
+  -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
+  -e COSTHAWK_AUTO_SYNC=true \
+  costhawk -- npx -y costhawk@latest
 ```
 
 Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer** in your CostHawk dashboard.
 
 <Tip>
-  This sets your API key and enables auto-sync globally, so every new Claude Code session automatically syncs your usage data.
+  This is a one-time setup. The env vars are stored in your MCP config, so auto-sync runs automatically on every Claude Code session.
 </Tip>
 
 **Verify it worked:**
@@ -30,21 +30,17 @@ You should see `"autoSyncEnabled": true` and `"hasApiKey": true`.
 
 ---
 
-## Alternative: MCP-Only Setup
+## Claude-Only Mode
 
-If you prefer not to set global env vars, you can pass them directly to the MCP server:
+If you want to sync Claude Code usage but **not** Codex CLI:
 
-<CodeGroup>
-
-```bash Global (All Projects)
-claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npx -y costhawk@latest
+```bash
+claude mcp add -s user \
+  -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
+  -e COSTHAWK_AUTO_SYNC=true \
+  -e COSTHAWK_CODEX_AUTO_SYNC=false \
+  costhawk -- npx -y costhawk@latest
 ```
-
-```bash Current Project Only
-claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npx -y costhawk@latest
-```
-
-</CodeGroup>
 
 ### Manual Configuration
 
