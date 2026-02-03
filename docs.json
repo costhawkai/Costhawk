@@ -5,14 +5,7 @@
   "colors": {
     "primary": "#1BCF7A",
     "light": "#34D399",
-    "dark": "#10B981",
-    "background": {
-      "dark": "#0A0A0B"
-    }
-  },
-  "styling": {
-    "codeblocks": "dark",
-    "eyebrow": "uppercase"
+    "dark": "#10B981"
   },
   "favicon": "/logo/costhawk-logo.png",
   "navigation": {
