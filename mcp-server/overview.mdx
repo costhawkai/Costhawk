@@ -47,19 +47,22 @@ This prints all file paths the MCP server would access without making any networ
 
 ## Installation
 
-<CodeGroup>
+**One-liner setup with auto-sync:**
 
-```bash Global Installation (Recommended)
-claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+```bash
+echo 'export COSTHAWK_API_KEY="YOUR_TOKEN_HERE"' >> ~/.zshrc && \
+echo 'export COSTHAWK_AUTO_SYNC=true' >> ~/.zshrc && \
+source ~/.zshrc && \
+claude mcp add -s user costhawk -- npx -y costhawk@latest
 ```
 
-```bash Project-Only Installation
-claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
-```
-
-</CodeGroup>
+Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer**.
 
 After installation, restart Claude Code to load the MCP server.
+
+<Card title="Full Installation Guide" icon="book" href="/mcp-server/installation">
+  See alternative setup methods, manual configuration, and troubleshooting.
+</Card>
 
 ## Available Tools
 

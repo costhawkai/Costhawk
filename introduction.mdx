@@ -73,14 +73,17 @@ Get started with CostHawk in under 5 minutes:
   <Step title="Get Your Access Token">
     Once approved, go to **Settings → Developer → Create Token** in your dashboard.
   </Step>
-  <Step title="Install the MCP Server">
-    Add CostHawk to Claude Code with one command:
+  <Step title="Install with Auto-Sync">
+    Run this one-liner to set up CostHawk globally:
     ```bash
-    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx -y costhawk
+    echo 'export COSTHAWK_API_KEY="YOUR_TOKEN"' >> ~/.zshrc && \
+    echo 'export COSTHAWK_AUTO_SYNC=true' >> ~/.zshrc && \
+    source ~/.zshrc && \
+    claude mcp add -s user costhawk -- npx -y costhawk@latest
     ```
   </Step>
   <Step title="Start Tracking">
-    Ask Claude: "What's my AI API usage this month?"
+    Restart Claude Code, then ask: "What's my AI API usage this month?"
   </Step>
 </Steps>
 
