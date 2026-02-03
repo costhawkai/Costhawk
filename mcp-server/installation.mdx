@@ -11,7 +11,7 @@ One command to install CostHawk with auto-sync enabled:
 claude mcp add -s user \
   -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
   -e COSTHAWK_AUTO_SYNC=true \
-  costhawk -- npx -y costhawk@latest
+  costhawk -- npx --yes costhawk@latest
 ```
 
 Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer** in your CostHawk dashboard.
@@ -23,7 +23,7 @@ Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer**
 **Verify it worked:**
 
 ```bash
-npx -y costhawk@latest --self-test
+npx --yes costhawk@latest --self-test
 ```
 
 You should see `"autoSyncEnabled": true` and `"hasApiKey": true`.
@@ -39,7 +39,7 @@ claude mcp add -s user \
   -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
   -e COSTHAWK_AUTO_SYNC=true \
   -e COSTHAWK_CODEX_AUTO_SYNC=false \
-  costhawk -- npx -y costhawk@latest
+  costhawk -- npx --yes costhawk@latest
 ```
 
 ### Manual Configuration
@@ -112,7 +112,7 @@ Claude should list the available tools like `costhawk_get_usage_summary`, `costh
 
 ## Updating
 
-The MCP server uses `npx -y costhawk` which automatically fetches the latest version. To force an update, clear the npx cache:
+The MCP server uses `npx --yes costhawk` which automatically fetches the latest version. To force an update, clear the npx cache:
 
 ```bash
 rm -rf ~/.npm/_npx
