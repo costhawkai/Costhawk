@@ -21,21 +21,38 @@ description: "Get up and running with CostHawk in 5 minutes"
 
 ## Step 2: Add to Claude Code
 
-The fastest way to get started is with the one-liner command:
+<Tabs>
+  <Tab title="macOS/Linux">
+    The fastest way to get started is with the one-liner command:
 
-<CodeGroup>
+    <CodeGroup>
 
-```bash Global (All Projects)
-claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
-```
+    ```bash Global (All Projects)
+    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
+    ```
 
-```bash Current Project Only
-claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
-```
+    ```bash Current Project Only
+    claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
+    ```
 
-</CodeGroup>
+    </CodeGroup>
 
-Replace `YOUR_TOKEN_HERE` with your access token from Step 1.
+    Replace `YOUR_TOKEN_HERE` with your access token from Step 1.
+  </Tab>
+  <Tab title="Windows">
+    Run the setup wizard which handles everything automatically:
+
+    ```powershell
+    npx costhawk@latest --setup
+    ```
+
+    This will prompt for your API key and configure everything for you.
+
+    <Warning>
+      The `claude mcp add` command has argument parsing issues on Windows. Use the setup wizard instead.
+    </Warning>
+  </Tab>
+</Tabs>
 
 ## Step 3: Restart Claude Code
 

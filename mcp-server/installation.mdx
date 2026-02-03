@@ -3,7 +3,9 @@ title: Installation
 description: "Install the CostHawk MCP server for Claude Code and Claude Desktop"
 ---
 
-## Quick Setup (Recommended)
+## Quick Setup
+
+### macOS / Linux
 
 One command to install CostHawk with auto-sync enabled:
 
@@ -16,51 +18,105 @@ claude mcp add -s user \
 
 Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer** in your CostHawk dashboard.
 
-<Tip>
-  This is a one-time setup. The env vars are stored in your MCP config, so auto-sync runs automatically on every Claude Code session.
-</Tip>
+### Windows
 
-**Verify it worked:**
+<Warning>
+  The `claude mcp add` command has argument parsing issues on Windows. Use the **automated setup** instead.
+</Warning>
 
-```bash
-npx --yes costhawk@latest --self-test
+Run the setup wizard:
+
+```powershell
+npx costhawk@latest --setup
 ```
 
-You should see `"autoSyncEnabled": true` and `"hasApiKey": true`.
+This will:
+1. Prompt for your API key
+2. Auto-detect your config file location
+3. Create or update your MCP configuration
+4. Enable auto-sync automatically
 
----
-
-## Claude-Only Mode
-
-If you want to sync Claude Code usage but **not** Codex CLI:
-
-```bash
-claude mcp add -s user \
-  -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
-  -e COSTHAWK_AUTO_SYNC=true \
-  -e COSTHAWK_CODEX_AUTO_SYNC=false \
-  costhawk -- npx --yes costhawk@latest
-```
-
-### Manual Configuration
-
-Add to `~/.claude/.mcp.json`:
+**Or manually edit** `%USERPROFILE%\.claude\.mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "costhawk": {
       "command": "npx",
-      "args": ["-y", "costhawk"],
+      "args": ["costhawk@latest"],
       "env": {
-        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+        "COSTHAWK_AUTO_SYNC": "true"
       }
     }
   }
 }
 ```
 
-Then restart Claude Code.
+---
+
+## Verify Installation
+
+After setup, verify it worked:
+
+```bash
+npx costhawk@latest --self-test
+```
+
+You should see `"autoSyncEnabled": true` and `"hasApiKey": true`.
+
+Then restart Claude Code and ask:
+
+> "What CostHawk tools are available?"
+
+---
+
+## Alternative: --setup Command (All Platforms)
+
+If you prefer an interactive setup on any platform:
+
+```bash
+npx costhawk@latest --setup
+```
+
+This works on macOS, Linux, and Windows.
+
+---
+
+## Claude-Only Mode
+
+If you want to sync Claude Code usage but **not** Codex CLI, add the extra env var:
+
+<Tabs>
+  <Tab title="macOS/Linux">
+    ```bash
+    claude mcp add -s user \
+      -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
+      -e COSTHAWK_AUTO_SYNC=true \
+      -e COSTHAWK_CODEX_AUTO_SYNC=false \
+      costhawk -- npx --yes costhawk@latest
+    ```
+  </Tab>
+  <Tab title="Windows (manual)">
+    ```json
+    {
+      "mcpServers": {
+        "costhawk": {
+          "command": "npx",
+          "args": ["costhawk@latest"],
+          "env": {
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+            "COSTHAWK_AUTO_SYNC": "true",
+            "COSTHAWK_CODEX_AUTO_SYNC": "false"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+---
 
 ## Claude Desktop
 
@@ -73,9 +129,10 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "costhawk": {
       "command": "npx",
-      "args": ["-y", "costhawk"],
+      "args": ["costhawk@latest"],
       "env": {
-        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+        "COSTHAWK_AUTO_SYNC": "true"
       }
     }
   }
@@ -91,9 +148,10 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json`:
   "mcpServers": {
     "costhawk": {
       "command": "npx",
-      "args": ["-y", "costhawk"],
+      "args": ["costhawk@latest"],
       "env": {
-        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+        "COSTHAWK_AUTO_SYNC": "true"
       }
     }
   }
@@ -102,23 +160,28 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json`:
 
 Then restart Claude Desktop.
 
-## Verify Installation
-
-After restarting, ask Claude:
-
-> "What CostHawk tools are available?"
-
-Claude should list the available tools like `costhawk_get_usage_summary`, `costhawk_get_savings`, etc.
+---
 
 ## Updating
 
-The MCP server uses `npx --yes costhawk` which automatically fetches the latest version. To force an update, clear the npx cache:
+The MCP server uses `npx costhawk@latest` which automatically fetches the latest version. To force an update, clear the npx cache:
 
-```bash
-rm -rf ~/.npm/_npx
-```
+<Tabs>
+  <Tab title="macOS/Linux">
+    ```bash
+    rm -rf ~/.npm/_npx
+    ```
+  </Tab>
+  <Tab title="Windows">
+    ```powershell
+    Remove-Item -Recurse -Force "$env:LOCALAPPDATA\npm-cache\_npx"
+    ```
+  </Tab>
+</Tabs>
 
 Then restart Claude Code/Desktop.
+
+---
 
 ## Environment Variables
 
@@ -127,7 +190,9 @@ Then restart Claude Code/Desktop.
 | `COSTHAWK_API_KEY` | Yes | - | Your CostHawk access token |
 | `COSTHAWK_API_URL` | No | `https://costhawk.ai` | API base URL |
 | `COSTHAWK_AUTO_SYNC` | No | `false` | Enable automatic sync on tool calls |
-| `COSTHAWK_SYNC_CODEX` | No | `true` | Include Codex CLI data in syncs |
+| `COSTHAWK_CODEX_AUTO_SYNC` | No | `true` | Include Codex CLI data in syncs |
+
+---
 
 ## Trust & Privacy Features
 
@@ -148,12 +213,12 @@ This returns the full payload without making any network requests.
 Run this command to see all files CostHawk would read:
 
 ```bash
-npx costhawk --what-we-read
+npx costhawk@latest --what-we-read
 ```
 
 **Output example:**
 ```
-CostHawk MCP Server v1.3.3 - Files We Access
+CostHawk MCP Server v1.3.7 - Files We Access
 
 Claude Code:
   ~/.claude/projects/*/conversations.json
@@ -164,25 +229,6 @@ OpenAI Codex:
 
 Note: We only read usage metadata (tokens, models, timestamps).
 We never read your code, prompts, or conversation content.
-```
-
-### Disable Codex Sync
-
-If you only want to sync Claude Code data:
-
-```json
-{
-  "mcpServers": {
-    "costhawk": {
-      "command": "npx",
-      "args": ["-y", "costhawk"],
-      "env": {
-        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
-        "COSTHAWK_SYNC_CODEX": "false"
-      }
-    }
-  }
-}
 ```
 
 ### What Data We Send

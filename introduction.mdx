@@ -74,13 +74,19 @@ Get started with CostHawk in under 5 minutes:
     Once approved, go to **Settings → Developer → Create Token** in your dashboard.
   </Step>
   <Step title="Install with Auto-Sync">
-    One command to set up CostHawk:
+    **macOS/Linux:**
     ```bash
     claude mcp add -s user \
       -e COSTHAWK_API_KEY=YOUR_TOKEN \
       -e COSTHAWK_AUTO_SYNC=true \
       costhawk -- npx --yes costhawk@latest
     ```
+
+    **Windows:**
+    ```powershell
+    npx costhawk@latest --setup
+    ```
+    The setup wizard will prompt for your API key and enable auto-sync.
   </Step>
   <Step title="Start Tracking">
     Restart Claude Code, then ask: "What's my AI API usage this month?"
