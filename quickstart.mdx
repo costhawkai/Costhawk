@@ -28,11 +28,11 @@ description: "Get up and running with CostHawk in 5 minutes"
     <CodeGroup>
 
     ```bash Global (All Projects)
-    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
+    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk@latest
     ```
 
     ```bash Current Project Only
-    claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
+    claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk@latest
     ```
 
     </CodeGroup>
@@ -53,6 +53,35 @@ description: "Get up and running with CostHawk in 5 minutes"
     </Warning>
   </Tab>
 </Tabs>
+
+### OpenCode (opencode.ai)
+
+Add CostHawk to your OpenCode config at `~/.config/opencode/opencode.json` (or `opencode.jsonc`):
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "costhawk": {
+      "type": "local",
+      "command": ["npx", "--yes", "costhawk@latest"],
+      "enabled": true,
+      "environment": {
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
+If you also use Claude Code or the OpenAI Codex CLI on this machine, you can enable local auto-sync by adding:
+`"COSTHAWK_AUTO_SYNC": "true"` (and optionally `"COSTHAWK_CODEX_AUTO_SYNC": "false"` to disable Codex sync).
+
+Prefer a guided setup? Run:
+
+```bash
+npm exec --yes costhawk@latest -- --setup --opencode --no-claude
+```
 
 ## Step 3: Restart Claude Code
 
@@ -92,7 +121,7 @@ If you prefer to configure manually, add this to your MCP config file:
       "mcpServers": {
         "costhawk": {
           "command": "npx",
-          "args": ["-y", "costhawk"],
+          "args": ["--yes", "costhawk@latest"],
           "env": {
             "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
           }
@@ -108,7 +137,7 @@ If you prefer to configure manually, add this to your MCP config file:
       "mcpServers": {
         "costhawk": {
           "command": "npx",
-          "args": ["-y", "costhawk"],
+          "args": ["--yes", "costhawk@latest"],
           "env": {
             "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
           }
@@ -124,7 +153,7 @@ If you prefer to configure manually, add this to your MCP config file:
       "mcpServers": {
         "costhawk": {
           "command": "npx",
-          "args": ["-y", "costhawk"],
+          "args": ["--yes", "costhawk@latest"],
           "env": {
             "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
           }

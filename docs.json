@@ -7,7 +7,7 @@
     "light": "#34D399",
     "dark": "#10B981"
   },
-  "favicon": "/logo/costhawk-logo.png",
+  "favicon": "/logo/costhawk-logo.webp",
   "navigation": {
     "tabs": [
       {
@@ -77,8 +77,8 @@
     }
   },
   "logo": {
-    "light": "/logo/costhawk-logo.png",
-    "dark": "/logo/costhawk-logo.png"
+    "light": "/logo/costhawk-logo.webp",
+    "dark": "/logo/costhawk-logo.webp"
   },
   "navbar": {
     "links": [

@@ -4,7 +4,7 @@ description: "Track, monitor, and optimize your AI API costs across all provider
 ---
 
 <img
-  src="/logo/costhawk-logo.png"
+  src="/logo/costhawk-logo.webp"
   alt="CostHawk"
   style={{ maxWidth: '200px', marginBottom: '20px' }}
 />
@@ -109,12 +109,12 @@ We believe transparency builds trust. CostHawk is designed so you can verify eve
 
 <AccordionGroup>
   <Accordion title="What files does CostHawk access?">
-    Run `npx costhawk --what-we-read` to see exactly which files the MCP server accesses. We only read usage metadata from `~/.claude/projects` and `~/.codex/sessions`.
+    Run `npm exec --yes costhawk@latest -- --what-we-read` to see exactly which files the MCP server accesses. We only read usage metadata from `~/.claude/projects` and `~/.codex/sessions`.
   </Accordion>
   <Accordion title="What data gets sent to CostHawk?">
     Only usage metadata: token counts, model names, timestamps, and hashed project IDs. Never your code, prompts, or file paths. Use `dryRun: true` to preview any payload.
   </Accordion>
   <Accordion title="Can I disable automatic syncing?">
-    Auto-sync is off by default. Enable with `COSTHAWK_AUTO_SYNC=true`. You can also disable Codex sync specifically with `COSTHAWK_SYNC_CODEX=false`.
+    Auto-sync is off by default. Enable with `COSTHAWK_AUTO_SYNC=true`. You can also disable Codex sync specifically with `COSTHAWK_CODEX_AUTO_SYNC=false`.
   </Accordion>
 </AccordionGroup>

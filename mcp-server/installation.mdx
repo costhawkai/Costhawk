@@ -39,16 +39,16 @@ This will:
 **Or manually edit** `%USERPROFILE%\.claude\.mcp.json`:
 
 ```json
-{
-  "mcpServers": {
-    "costhawk": {
-      "command": "npx",
-      "args": ["costhawk@latest"],
-      "env": {
-        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
-        "COSTHAWK_AUTO_SYNC": "true"
-      }
-    }
+    {
+      "mcpServers": {
+        "costhawk": {
+          "command": "npx",
+          "args": ["--yes", "costhawk@latest"],
+          "env": {
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+            "COSTHAWK_AUTO_SYNC": "true"
+          }
+        }
   }
 }
 ```
@@ -83,6 +83,37 @@ This works on macOS, Linux, and Windows.
 
 ---
 
+## OpenCode (opencode.ai)
+
+OpenCode reads MCP servers from `~/.config/opencode/opencode.json` (or `opencode.jsonc`). Add CostHawk under `mcp`:
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "costhawk": {
+      "type": "local",
+      "command": ["npx", "--yes", "costhawk@latest"],
+      "enabled": true,
+      "environment": {
+        "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+      }
+    }
+  }
+}
+```
+
+If you also use Claude Code or the OpenAI Codex CLI on this machine, you can enable local auto-sync by adding
+`"COSTHAWK_AUTO_SYNC": "true"` (and optionally `"COSTHAWK_CODEX_AUTO_SYNC": "false"` to disable Codex sync).
+
+Prefer a guided setup? Run:
+
+```bash
+npm exec --yes costhawk@latest -- --setup --opencode --no-claude
+```
+
+---
+
 ## Claude-Only Mode
 
 If you want to sync Claude Code usage but **not** Codex CLI, add the extra env var:
@@ -103,7 +134,7 @@ If you want to sync Claude Code usage but **not** Codex CLI, add the extra env v
       "mcpServers": {
         "costhawk": {
           "command": "npx",
-          "args": ["costhawk@latest"],
+          "args": ["--yes", "costhawk@latest"],
           "env": {
             "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
             "COSTHAWK_AUTO_SYNC": "true",
@@ -129,7 +160,7 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "costhawk": {
       "command": "npx",
-      "args": ["costhawk@latest"],
+      "args": ["--yes", "costhawk@latest"],
       "env": {
         "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
         "COSTHAWK_AUTO_SYNC": "true"
@@ -148,7 +179,7 @@ Edit `%APPDATA%\Claude\claude_desktop_config.json`:
   "mcpServers": {
     "costhawk": {
       "command": "npx",
-      "args": ["costhawk@latest"],
+      "args": ["--yes", "costhawk@latest"],
       "env": {
         "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
         "COSTHAWK_AUTO_SYNC": "true"

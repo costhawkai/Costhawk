@@ -32,10 +32,10 @@
                                                                                         
   ```bash                                                                               
   # Global installation (all projects)                                                  
-  claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk
+  claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk@latest
                                                                                         
   # Project-specific installation                                                       
-  claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk        
+  claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk@latest        
                                                                                         
   Get your access token from https://costhawk.ai/dashboard/settings in your CostHawk    
   dashboard (requires approved account).                                                
