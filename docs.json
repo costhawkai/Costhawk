@@ -33,6 +33,20 @@
         ]
       },
       {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "API Proxy",
+            "pages": [
+              "integrations/overview",
+              "integrations/openai",
+              "integrations/anthropic",
+              "integrations/google"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "API Reference",
         "groups": [
           {

@@ -1,0 +1,141 @@
+---
+title: "Anthropic Integration"
+sidebarTitle: "Anthropic"
+description: "Route Anthropic API calls through CostHawk to track costs"
+---
+
+## Quick Setup
+
+<Steps>
+  <Step title="Create a wrapped key">
+    Go to [Dashboard → Integrations](https://costhawk.ai/dashboard/wrapped-keys), click **Create API Key**, select **Anthropic**, and paste your Anthropic API key.
+  </Step>
+  <Step title="Copy your wrapped key">
+    Copy the `ch_sk_...` key that CostHawk generates.
+  </Step>
+  <Step title="Update your code">
+    Change the base URL and API key as shown below.
+  </Step>
+</Steps>
+
+## Proxy URL
+
+```
+POST https://costhawk.ai/api/proxy/anthropic
+```
+
+This replaces `https://api.anthropic.com/v1/messages`.
+
+## Code Examples
+
+### Python (Anthropic SDK)
+
+```python
+import anthropic
+
+client = anthropic.Anthropic(
+    api_key="ch_sk_your_wrapped_key_here",
+    base_url="https://costhawk.ai/api/proxy/anthropic",
+)
+
+message = client.messages.create(
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "Hello, Claude!"}
+    ]
+)
+
+print(message.content[0].text)
+```
+
+<Note>
+  The Anthropic SDK appends `/v1/messages` to the base URL. Set `base_url` to `https://costhawk.ai/api/proxy/anthropic` and the SDK handles the rest.
+</Note>
+
+### Node.js (Anthropic SDK)
+
+```javascript
+import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic({
+  apiKey: "ch_sk_your_wrapped_key_here",
+  baseURL: "https://costhawk.ai/api/proxy/anthropic",
+});
+
+const message = await client.messages.create({
+  model: "claude-sonnet-4-5-20250929",
+  max_tokens: 1024,
+  messages: [
+    { role: "user", content: "Hello, Claude!" }
+  ],
+});
+
+console.log(message.content[0].text);
+```
+
+### curl
+
+```bash
+curl -X POST https://costhawk.ai/api/proxy/anthropic \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer ch_sk_your_wrapped_key_here" \
+  -d '{
+    "model": "claude-sonnet-4-5-20250929",
+    "max_tokens": 1024,
+    "messages": [
+      {"role": "user", "content": "Hello, Claude!"}
+    ]
+  }'
+```
+
+<Note>
+  When calling the proxy directly (curl/fetch), use `Authorization: Bearer` — CostHawk handles converting this to the `x-api-key` header that Anthropic expects.
+</Note>
+
+### Streaming
+
+```python
+import anthropic
+
+client = anthropic.Anthropic(
+    api_key="ch_sk_your_wrapped_key_here",
+    base_url="https://costhawk.ai/api/proxy/anthropic",
+)
+
+with client.messages.stream(
+    model="claude-sonnet-4-5-20250929",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "Write a haiku about APIs"}
+    ],
+) as stream:
+    for text in stream.text_stream:
+        print(text, end="")
+```
+
+## Supported Models
+
+All Anthropic models work through the proxy, including:
+
+- `claude-opus-4-6`
+- `claude-sonnet-4-5-20250929`
+- `claude-haiku-4-5-20251001`
+
+## Supported Endpoint
+
+The proxy currently supports the **Messages** endpoint (`/v1/messages`). This is the primary Anthropic API endpoint.
+
+## Environment Variables
+
+```bash
+# .env
+ANTHROPIC_API_KEY=ch_sk_your_wrapped_key_here
+ANTHROPIC_BASE_URL=https://costhawk.ai/api/proxy/anthropic
+```
+
+```python
+# The Anthropic SDK reads ANTHROPIC_API_KEY automatically
+import anthropic
+client = anthropic.Anthropic()
+```

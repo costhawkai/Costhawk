@@ -1,0 +1,107 @@
+---
+title: "API Proxy & Wrapped Keys"
+sidebarTitle: "Overview"
+description: "Track costs automatically by routing API calls through CostHawk"
+---
+
+CostHawk's API proxy lets you track every AI API call automatically. Instead of calling OpenAI, Anthropic, or Google directly, you route requests through CostHawk. Your code stays almost the same — you just change the base URL and use a wrapped key.
+
+## How It Works
+
+<Steps>
+  <Step title="Create a wrapped key">
+    Go to your [CostHawk Dashboard](https://costhawk.ai/dashboard/wrapped-keys), click **Create API Key**, choose a provider, and paste your real API key. CostHawk encrypts it and gives you a wrapped key starting with `ch_sk_`.
+  </Step>
+  <Step title="Update your code">
+    Change the base URL to point at CostHawk's proxy and use the wrapped key as your API key. That's it — your request format stays identical.
+  </Step>
+  <Step title="Costs tracked automatically">
+    CostHawk forwards your request to the real provider, tracks tokens and cost, then returns the response. You see everything in your dashboard in real-time.
+  </Step>
+</Steps>
+
+## Base URLs
+
+Use these base URLs in place of the provider's default:
+
+| Provider | CostHawk Proxy URL | Replaces |
+|----------|-------------------|----------|
+| OpenAI | `https://costhawk.ai/api/proxy/openai` | `https://api.openai.com/v1/chat/completions` |
+| Anthropic | `https://costhawk.ai/api/proxy/anthropic` | `https://api.anthropic.com/v1/messages` |
+| Google Gemini | `https://costhawk.ai/api/proxy/google` | `https://generativelanguage.googleapis.com/...` |
+
+## Authentication
+
+All providers use the same auth pattern with your wrapped key:
+
+```bash
+Authorization: Bearer ch_sk_your_wrapped_key_here
+```
+
+CostHawk resolves the wrapped key, decrypts your real API key, and forwards the request to the provider with the correct authentication format.
+
+## What Gets Tracked
+
+Every proxied request logs:
+
+- **Provider & model** used
+- **Input & output tokens** (from the provider's response)
+- **Cost** calculated from CostHawk's pricing database
+- **Latency** (round-trip time)
+- **Cache & reasoning tokens** (when applicable)
+- **Attribution** (organization, project, team, environment)
+
+## Response Headers
+
+CostHawk adds cost information to every response:
+
+| Header | Description |
+|--------|------------|
+| `X-CH-Cost-USD` | Total cost of the request |
+| `X-CH-Input-Tokens` | Input tokens used |
+| `X-CH-Output-Tokens` | Output tokens used |
+| `X-CH-Total-Tokens` | Total tokens used |
+| `X-CH-Cost-Input-USD` | Cost of input tokens |
+| `X-CH-Cost-Output-USD` | Cost of output tokens |
+| `X-CH-Spending-Warning` | Warning when approaching spending limits |
+
+## Spending Limits
+
+Wrapped keys support policy-based spending limits:
+
+- **Daily limit** — Max spend per day (e.g., $10/day)
+- **Monthly limit** — Max spend per month (e.g., $500/month)
+- **Hard stop** — Block requests when limit is exceeded (returns `429`)
+- **Soft warning** — Allow requests but add `X-CH-Spending-Warning` header
+
+Configure limits when creating or editing a wrapped key in the dashboard.
+
+## Streaming
+
+CostHawk fully supports streaming responses. When you set `stream: true`, the proxy:
+
+1. Streams the response back to you in real-time (no added latency)
+2. Parses the stream in the background to extract token usage
+3. Logs usage data after the stream completes
+
+Your streaming code works exactly the same as with a direct provider connection.
+
+## Security
+
+- Real API keys are encrypted with AES-256-GCM at rest
+- Keys are only decrypted in memory during request forwarding
+- Wrapped keys can be revoked instantly from the dashboard
+- IP allowlists restrict which addresses can use a key
+- Model restrictions limit which models a key can access
+
+<CardGroup cols={3}>
+  <Card title="OpenAI" icon="bolt" href="/integrations/openai">
+    Integration guide with code examples
+  </Card>
+  <Card title="Anthropic" icon="message" href="/integrations/anthropic">
+    Integration guide with code examples
+  </Card>
+  <Card title="Google Gemini" icon="google" href="/integrations/google">
+    Integration guide with code examples
+  </Card>
+</CardGroup>

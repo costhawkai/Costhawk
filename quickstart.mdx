@@ -3,7 +3,24 @@ title: Quickstart
 description: "Get up and running with CostHawk in 5 minutes"
 ---
 
-## Prerequisites
+## Choose Your Integration
+
+CostHawk offers two ways to track your AI API costs:
+
+<CardGroup cols={2}>
+  <Card title="MCP Server" icon="robot" href="#mcp-server-setup">
+    For **Claude Code & Claude Desktop** users. Syncs your local usage data automatically — no code changes needed.
+  </Card>
+  <Card title="API Proxy" icon="shuffle" href="/integrations/overview">
+    For **any application** calling OpenAI, Anthropic, or Google APIs. Change your base URL and every call is tracked with per-request cost data.
+  </Card>
+</CardGroup>
+
+---
+
+## MCP Server Setup
+
+### Prerequisites
 
 - A CostHawk account (join the [waitlist](https://costhawk.ai) if you don't have one)
 - Claude Code or Claude Desktop installed
@@ -167,10 +184,16 @@ If you prefer to configure manually, add this to your MCP config file:
 ## Next Steps
 
 <CardGroup cols={2}>
+  <Card title="API Proxy Setup" icon="shuffle" href="/integrations/overview">
+    Track costs from any app by routing API calls through CostHawk
+  </Card>
   <Card title="MCP Tools" icon="wrench" href="/mcp-server/tools">
     Explore all available MCP tools and their parameters
   </Card>
   <Card title="Usage Tracking" icon="chart-line" href="/features/usage-tracking">
     Learn about usage tracking and analytics
+  </Card>
+  <Card title="Alerts & Budgets" icon="bell" href="/features/alerts">
+    Set up spending alerts and budget limits
   </Card>
 </CardGroup>
