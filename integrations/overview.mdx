@@ -6,6 +6,17 @@ description: "Track costs automatically by routing API calls through CostHawk"
 
 CostHawk's API proxy lets you track every AI API call automatically. Instead of calling OpenAI, Anthropic, or Google directly, you route requests through CostHawk. Your code stays almost the same — you just change the base URL and use a wrapped key.
 
+## Choose Your Mode
+
+| Mode | Setup | What You Get |
+|------|-------|--------------|
+| Reporting Mode | MCP local sync and/or provider reporting APIs | Useful summaries, but limited enforcement and attribution |
+| Control Mode (Recommended) | Wrapped keys + CostHawk proxy routing | Full per-request tracking, attribution, spending limits, and hard-stop enforcement |
+
+<Warning>
+  Read-only/reporting credentials are not enough for full proxy tracking. You need inference-capable provider keys to route live traffic through wrapped keys.
+</Warning>
+
 ## How It Works
 
 <Steps>

@@ -18,6 +18,10 @@ description: "Route Anthropic API calls through CostHawk to track costs"
   </Step>
 </Steps>
 
+<Warning>
+  Use a standard Anthropic API key (`sk-ant-...`) for inference traffic. Admin keys (`sk-ant-admin-...`) are for organization administration/reporting APIs, not normal Claude inference via proxy.
+</Warning>
+
 ## Proxy URL
 
 ```

@@ -18,6 +18,10 @@ description: "Route OpenAI API calls through CostHawk to track costs"
   </Step>
 </Steps>
 
+<Warning>
+  Use an inference-capable OpenAI key. `Read Only` keys cannot run chat completions, so wrapped-key proxy tracking will fail.
+</Warning>
+
 ## Proxy URL
 
 ```
