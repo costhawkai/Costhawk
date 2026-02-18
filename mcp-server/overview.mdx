@@ -22,7 +22,7 @@ CostHawk was built for developers who care about transparency. We believe you sh
 
 <CardGroup cols={2}>
   <Card title="Local-First Parsing" icon="shield">
-    We compute usage locally from `~/.claude/projects` and `~/.codex/sessions` before anything leaves your machine.
+    We compute usage locally from Claude/Codex session files before anything leaves your machine.
   </Card>
   <Card title="No Prompt Content" icon="eye-slash">
     Only usage metadata is sent: token counts, models, timestamps, and hashed project IDs — never your code or prompts.
@@ -40,7 +40,7 @@ CostHawk was built for developers who care about transparency. We believe you sh
 Run this command to see exactly which files CostHawk accesses:
 
 ```bash
-npx costhawk --what-we-read
+npm exec --yes costhawk@latest -- --what-we-read
 ```
 
 This prints all file paths the MCP server would access without making any network requests.
@@ -86,11 +86,15 @@ After installation, restart Claude Code to load the MCP server.
 | `costhawk_get_savings` | Show savings vs retail pricing |
 | `costhawk_list_subscriptions` | List active subscriptions |
 | `costhawk_get_savings_breakdown` | Per-model usage breakdown |
-| `costhawk_sync_claude_code` | Sync Claude Code usage from local files |
-| `costhawk_sync_codex` | Sync OpenAI Codex CLI usage from local files |
+| `costhawk_sync_claude_code_usage` | Sync Claude Code usage from local files |
+| `costhawk_sync_codex_usage` | Sync OpenAI Codex CLI usage from local files |
 
 <Card title="Full Tool Reference" icon="wrench" href="/mcp-server/tools">
   See detailed documentation for each tool including parameters and examples.
+</Card>
+
+<Card title="Operations Runbook" icon="list-check" href="/mcp-server/operations">
+  Explicit checks for self-test, auto-sync, and Codex session troubleshooting.
 </Card>
 
 ## Example Conversations

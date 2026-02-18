@@ -68,6 +68,7 @@
             "pages": [
               "mcp-server/overview",
               "mcp-server/installation",
+              "mcp-server/operations",
               "mcp-server/tools",
               "mcp-server/examples"
             ]

@@ -45,11 +45,11 @@ CostHawk offers two ways to track your AI API costs:
     <CodeGroup>
 
     ```bash Global (All Projects)
-    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk@latest
+    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npx --yes costhawk@latest
     ```
 
     ```bash Current Project Only
-    claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE costhawk -- npx --yes costhawk@latest
+    claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npx --yes costhawk@latest
     ```
 
     </CodeGroup>
@@ -104,7 +104,24 @@ npm exec --yes costhawk@latest -- --setup --opencode --no-claude
 
 After adding the MCP server, restart Claude Code to load the new tools.
 
-## Step 4: Start Using CostHawk
+## Step 4: Run Self-Test (Required)
+
+Run:
+
+```bash
+npm exec --yes costhawk@latest -- --self-test
+```
+
+Confirm:
+
+- `"hasApiKey": true`
+- `"autoSyncEnabled": true` if you want automatic uploads
+- `"codexAutoSyncEnabled": true` if you want Codex included in auto-sync
+- `"local.codexDir": true` if Codex sessions are discoverable on this machine
+
+If `local.codexDir` is `false` and you use a custom Codex path, set `COSTHAWK_CODEX_SESSIONS_DIR` in MCP env.
+
+## Step 5: Start Using CostHawk
 
 You can now ask Claude about your API costs:
 
@@ -126,6 +143,10 @@ You can now ask Claude about your API costs:
   </Accordion>
 </AccordionGroup>
 
+<Card title="Need Explicit Ops Checks?" icon="list-check" href="/mcp-server/operations">
+  Use the Operations Runbook for self-test interpretation, auto-sync behavior, and Codex troubleshooting.
+</Card>
+
 ## Alternative: Manual Configuration
 
 If you prefer to configure manually, add this to your MCP config file:
@@ -140,7 +161,8 @@ If you prefer to configure manually, add this to your MCP config file:
           "command": "npx",
           "args": ["--yes", "costhawk@latest"],
           "env": {
-            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+            "COSTHAWK_AUTO_SYNC": "true"
           }
         }
       }
@@ -156,7 +178,8 @@ If you prefer to configure manually, add this to your MCP config file:
           "command": "npx",
           "args": ["--yes", "costhawk@latest"],
           "env": {
-            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+            "COSTHAWK_AUTO_SYNC": "true"
           }
         }
       }
@@ -172,7 +195,8 @@ If you prefer to configure manually, add this to your MCP config file:
           "command": "npx",
           "args": ["--yes", "costhawk@latest"],
           "env": {
-            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE"
+            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
+            "COSTHAWK_AUTO_SYNC": "true"
           }
         }
       }

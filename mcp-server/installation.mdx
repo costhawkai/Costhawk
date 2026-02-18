@@ -60,14 +60,25 @@ This will:
 After setup, verify it worked:
 
 ```bash
-npx costhawk@latest --self-test
+npm exec --yes costhawk@latest -- --self-test
 ```
 
-You should see `"autoSyncEnabled": true` and `"hasApiKey": true`.
+You should see:
+
+- `"hasApiKey": true`
+- `"autoSyncEnabled": true` (if you enabled auto-sync)
+- `"codexAutoSyncEnabled": true` (unless intentionally disabled)
+- `"local.codexDir": true` when Codex sessions are discoverable
 
 Then restart Claude Code and ask:
 
 > "What CostHawk tools are available?"
+>
+> "List my Codex sessions from the last 7 days"
+
+<Card title="Need Explicit Diagnostics?" icon="list-check" href="/mcp-server/operations">
+  Follow the MCP Operations Runbook for self-test interpretation, auto-sync checks, and Codex troubleshooting.
+</Card>
 
 ---
 
@@ -195,7 +206,15 @@ Then restart Claude Desktop.
 
 ## Updating
 
-The MCP server uses `npx costhawk@latest` which automatically fetches the latest version. To force an update, clear the npx cache:
+The MCP server uses `costhawk@latest`, which usually refreshes automatically after restart.
+
+To force refresh and verify the binary in use:
+
+```bash
+npm exec --yes costhawk@latest -- --self-test
+```
+
+If needed, clear the npx cache:
 
 <Tabs>
   <Tab title="macOS/Linux">
@@ -221,7 +240,8 @@ Then restart Claude Code/Desktop.
 | `COSTHAWK_API_KEY` | Yes | - | Your CostHawk access token |
 | `COSTHAWK_API_URL` | No | `https://costhawk.ai` | API base URL |
 | `COSTHAWK_AUTO_SYNC` | No | `false` | Enable automatic sync on tool calls |
-| `COSTHAWK_CODEX_AUTO_SYNC` | No | `true` | Include Codex CLI data in syncs |
+| `COSTHAWK_CODEX_AUTO_SYNC` | No | `true` when auto-sync is enabled | Include Codex CLI data in syncs |
+| `COSTHAWK_CODEX_SESSIONS_DIR` | No | auto-discovery | Override Codex sessions directory if your setup is non-standard (useful when Codex install or `CODEX_HOME` changes paths) |
 
 ---
 
@@ -244,7 +264,7 @@ This returns the full payload without making any network requests.
 Run this command to see all files CostHawk would read:
 
 ```bash
-npx costhawk@latest --what-we-read
+npm exec --yes costhawk@latest -- --what-we-read
 ```
 
 **Output example:**
@@ -256,7 +276,9 @@ Claude Code:
   ~/.claude/projects/*/settings.json
 
 OpenAI Codex:
-  ~/.codex/sessions/*.json
+  ~/.codex/sessions/**/*.jsonl
+  ~/.config/codex/sessions/**/*.jsonl
+  ~/.local/share/codex/sessions/**/*.jsonl
 
 Note: We only read usage metadata (tokens, models, timestamps).
 We never read your code, prompts, or conversation content.

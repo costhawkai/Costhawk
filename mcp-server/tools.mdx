@@ -5,6 +5,10 @@ description: "Complete reference for all CostHawk MCP tools"
 
 ## Usage Tools
 
+<Note>
+  Most tools accept optional `format` (`markdown` or `json`). Write tools that upload data (`costhawk_sync_*`) also accept optional `apiKey` to override `COSTHAWK_API_KEY`.
+</Note>
+
 ### costhawk_get_usage_summary
 
 Get a summary of your AI API usage and costs over a time period.
@@ -159,16 +163,19 @@ Look up current pricing for AI models.
 
 ## Local Sync Tools
 
-### costhawk_sync_claude_code
+### costhawk_sync_claude_code_usage
 
-Sync Claude Code usage from local `~/.claude/projects` files. This parses your local session data and uploads usage metadata only.
+Sync Claude Code usage from local transcript files and upload usage metadata to CostHawk.
 
 **Parameters:**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `dryRun` | boolean | No | Preview what would be sent without uploading |
-| `startDate` | string | No | Only sync sessions after this date |
+| `maxAgeHours` | number | No | Only include sessions modified in the last N hours (default `720`) |
+| `dryRun` | boolean | No | Preview payload without uploading |
+| `previewLimit` | number | No | Number of sessions in dry-run preview (default `3`) |
+| `includeFileList` | boolean | No | Include local file paths read by parser |
+| `format` | string | No | `markdown` (default) or `json` |
 
 **Example:**
 > "Sync my Claude Code usage"
@@ -178,23 +185,85 @@ Sync Claude Code usage from local `~/.claude/projects` files. This parses your l
 
 ---
 
-### costhawk_sync_codex
+### costhawk_list_claude_code_sessions
 
-Sync OpenAI Codex CLI usage from local `~/.codex/sessions` files.
+List Claude Code sessions discovered locally before syncing.
 
 **Parameters:**
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `dryRun` | boolean | No | Preview what would be sent without uploading |
-| `startDate` | string | No | Only sync sessions after this date |
+| `maxAgeHours` | number | No | Only include sessions modified in the last N hours (default `168`) |
+| `limit` | number | No | Maximum sessions to return (default `20`) |
+| `format` | string | No | `markdown` (default) or `json` |
+
+---
+
+### costhawk_get_local_claude_code_usage
+
+Compute Claude Code usage locally without uploading anything.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `maxAgeHours` | number | No | Only include sessions modified in the last N hours (default `24`) |
+| `subscriptionPlan` | string | No | `pro`, `max_5x`, or `max_20x` (adds local savings estimate) |
+| `format` | string | No | `markdown` (default) or `json` |
+
+---
+
+### costhawk_sync_codex_usage
+
+Sync OpenAI Codex CLI usage from local session logs and upload usage metadata to CostHawk.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `maxAgeHours` | number | No | Only include sessions modified in the last N hours (default `720`) |
+| `dryRun` | boolean | No | Preview payload without uploading |
+| `previewLimit` | number | No | Number of sessions in dry-run preview (default `3`) |
+| `includeFileList` | boolean | No | Include local file paths read by parser |
+| `format` | string | No | `markdown` (default) or `json` |
 
 **Example:**
 > "Sync my Codex usage"
 
 <Note>
-  Codex sync can be disabled globally by setting `COSTHAWK_CODEX_AUTO_SYNC=false` in your environment.
+  Codex sync can be disabled globally with `COSTHAWK_CODEX_AUTO_SYNC=false`.
 </Note>
+
+---
+
+### costhawk_list_codex_sessions
+
+List Codex sessions discovered locally before syncing.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `maxAgeHours` | number | No | Only include sessions modified in the last N hours (default `168`) |
+| `limit` | number | No | Maximum sessions to return (default `20`) |
+| `format` | string | No | `markdown` (default) or `json` |
+
+---
+
+### costhawk_get_local_codex_usage
+
+Compute Codex usage locally without uploading anything.
+
+**Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `maxAgeHours` | number | No | Only include sessions modified in the last N hours (default `24`) |
+| `format` | string | No | `markdown` (default) or `json` |
+
+<Tip>
+  If Codex files are in a non-standard directory, set `COSTHAWK_CODEX_SESSIONS_DIR` in MCP env and restart your MCP host.
+</Tip>
 
 ---
 

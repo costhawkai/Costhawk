@@ -107,9 +107,9 @@ description: "Real-world examples of using CostHawk with Claude"
   </Accordion>
 
   <Accordion title="Sync Codex CLI usage">
-    **Prompt:** "Sync my Codex sessions"
+    **Prompt:** "List my Codex sessions first, then sync Codex usage for the last 30 days"
 
-    **What it does:** Parses local `~/.codex/sessions` files and uploads usage metadata. Codex sync can be disabled with `COSTHAWK_CODEX_AUTO_SYNC=false`.
+    **What it does:** Verifies local discovery with `costhawk_list_codex_sessions`, then uploads metadata with `costhawk_sync_codex_usage maxAgeHours=720`.
   </Accordion>
 
   <Accordion title="Combined sync">
@@ -125,10 +125,18 @@ description: "Real-world examples of using CostHawk with Claude"
   <Accordion title="See what files are accessed">
     Run in terminal:
     ```bash
-    npx costhawk --what-we-read
+    npm exec --yes costhawk@latest -- --what-we-read
     ```
 
     **What it does:** Lists all file paths the MCP server would access, without making network requests.
+  </Accordion>
+  <Accordion title="Verify MCP env and auto-sync flags">
+    Run in terminal:
+    ```bash
+    npm exec --yes costhawk@latest -- --self-test
+    ```
+
+    **What it does:** Confirms `hasApiKey`, `autoSyncEnabled`, `codexAutoSyncEnabled`, and local directory detection (`local.codexDir`, `local.claudeCodeDir`).
   </Accordion>
 
   <Accordion title="Preview any sync payload">

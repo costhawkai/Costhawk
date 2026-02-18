@@ -1,0 +1,114 @@
+---
+title: MCP Operations Runbook
+description: "How self-test, auto-sync, and Codex session discovery work in production"
+---
+
+Use this page when users report that CostHawk MCP is installed but Codex/Claude local usage is missing.
+
+## 1. Confirm The Binary And Environment
+
+Run:
+
+```bash
+npm exec --yes costhawk@latest -- --self-test
+```
+
+Verify these fields:
+
+- `env.hasApiKey` must be `true`
+- `env.autoSyncEnabled` must be `true` for automatic uploads
+- `env.codexAutoSyncEnabled` must be `true` to include Codex in auto-sync
+- `local.codexDir` should be `true` if a Codex sessions directory is detected
+- `local.claudeCodeDir` should be `true` if Claude Code local logs are present
+
+If `hasApiKey` is `false`, update MCP config with `COSTHAWK_API_KEY` and restart the MCP host.
+
+## 2. How Auto-Sync Actually Works
+
+Auto-sync runs only when `COSTHAWK_AUTO_SYNC=true`.
+
+- `COSTHAWK_AUTO_SYNC=false`: no local usage is synced automatically
+- `COSTHAWK_AUTO_SYNC=true` + `COSTHAWK_CODEX_AUTO_SYNC=true` (or unset): sync Claude + Codex
+- `COSTHAWK_AUTO_SYNC=true` + `COSTHAWK_CODEX_AUTO_SYNC=false`: sync Claude only
+
+Auto-sync is not retroactive by default for every historical session. For backfill, run manual sync with a wider time window.
+
+## 3. Codex Session Discovery (npm + brew users)
+
+Codex installation method can change where session logs are stored. CostHawk now checks multiple standard locations, including:
+
+- `~/.codex/sessions`
+- `~/.config/codex/sessions`
+- `~/.local/share/codex/sessions`
+
+It also respects `CODEX_HOME` automatically (`$CODEX_HOME/sessions`).
+
+If a user has a custom location, set:
+
+```bash
+COSTHAWK_CODEX_SESSIONS_DIR=/absolute/path/to/sessions
+```
+
+Then restart Claude Code / Claude Desktop.
+
+## 4. Manual Codex Verification Flow
+
+Run these in order:
+
+```text
+costhawk_list_codex_sessions
+```
+
+If sessions appear, run:
+
+```text
+costhawk_sync_codex_usage with maxAgeHours=720
+```
+
+For debug without upload:
+
+```text
+costhawk_sync_codex_usage with maxAgeHours=720, dryRun=true, includeFileList=true, format="json"
+```
+
+Expected: `sessionsParsed > 0` and a payload preview/files list when dry run is enabled.
+
+## 5. Manual Claude Code Verification Flow
+
+```text
+costhawk_list_claude_code_sessions
+```
+
+Then:
+
+```text
+costhawk_sync_claude_code_usage with maxAgeHours=720
+```
+
+## 6. If User Still Sees No Codex Sessions
+
+Ask for these artifacts:
+
+1. Output of `npm exec --yes costhawk@latest -- --self-test`
+2. Output of `npm exec --yes costhawk@latest -- --what-we-read`
+3. Output of `costhawk_list_codex_sessions`
+4. Output of `costhawk_sync_codex_usage` with `dryRun=true`, `includeFileList=true`, `format="json"`
+
+This set is enough to isolate:
+
+- missing env/auth
+- auto-sync disabled
+- directory/path mismatch
+- parsing mismatch for a specific Codex log format
+
+## 7. Update Behavior
+
+If MCP is configured with `npx`/`npm exec` and `costhawk@latest`, users normally get new releases automatically on restart.
+
+To force refresh:
+
+```bash
+npm exec --yes costhawk@latest -- --self-test
+```
+
+If needed, clear local npx cache and restart the MCP host.
