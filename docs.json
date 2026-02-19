@@ -36,9 +36,11 @@
         "tab": "Integrations",
         "groups": [
           {
-            "group": "API Proxy",
+            "group": "Integration Paths",
             "pages": [
               "integrations/overview",
+              "integrations/admin-api",
+              "integrations/otel",
               "integrations/openai",
               "integrations/anthropic",
               "integrations/google"

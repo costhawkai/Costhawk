@@ -1,118 +1,88 @@
 ---
-title: "API Proxy & Wrapped Keys"
+title: "Integration Overview"
 sidebarTitle: "Overview"
-description: "Track costs automatically by routing API calls through CostHawk"
+description: "Choose the right CostHawk integration path: Admin API, OTel, Proxy, and MCP"
 ---
 
-CostHawk's API proxy lets you track every AI API call automatically. Instead of calling OpenAI, Anthropic, or Google directly, you route requests through CostHawk. Your code stays almost the same — you just change the base URL and use a wrapped key.
+CostHawk supports progressive integration depth. Start simple, then add deeper controls only when needed.
 
-## Choose Your Mode
+## Three Integration Tiers
 
-| Mode | Setup | What You Get |
-|------|-------|--------------|
-| Reporting Mode | MCP local sync and/or provider reporting APIs | Useful summaries, but limited enforcement and attribution |
-| Control Mode (Recommended) | Wrapped keys + CostHawk proxy routing | Full per-request tracking, attribution, spending limits, and hard-stop enforcement |
+| Tier | Setup Time | Best For | What You Get |
+|---|---:|---|---|
+| Admin API Sync (Recommended start) | ~30s | Org-level visibility | Provider usage + cost data with no app code changes |
+| OTel Receiver (Power users) | ~2 min | Real-time coding telemetry | Near real-time metrics/logs from instrumented clients |
+| Proxy + Wrapped Keys (Advanced controls) | ~10 min | Enforcement and hard stops | Per-request tracking, attribution, and budget blocking |
 
-<Warning>
-  Read-only/reporting credentials are not enough for full proxy tracking. You need inference-capable provider keys to route live traffic through wrapped keys.
-</Warning>
+## MCP Status
 
-## How It Works
+<Info>
+  MCP remains fully supported. It is not being removed. Keep using MCP tools for assistant-native querying and local workflow automation.
+</Info>
+
+<Info>
+  Wrapped keys and proxy routing also remain fully supported. This includes Google Gemini and other supported provider proxy paths.
+</Info>
+
+## How To Choose
+
+<AccordionGroup>
+  <Accordion title="I want visibility fast with minimal setup">
+    Start with <a href="/integrations/admin-api">Admin API Sync</a>.
+  </Accordion>
+  <Accordion title="I need per-request blocking or spending hard stops">
+    Use proxy + wrapped keys. Start with <a href="/integrations/openai">OpenAI</a>, <a href="/integrations/anthropic">Anthropic</a>, or <a href="/integrations/google">Google</a>.
+  </Accordion>
+  <Accordion title="I need Google Gemini real-time tracking">
+    Use <a href="/integrations/google">Google Gemini proxy</a>. Google does not expose equivalent real-time usage APIs.
+  </Accordion>
+  <Accordion title="I want assistant-native analytics inside Claude/Codex">
+    Keep <a href="/mcp-server/overview">MCP</a> enabled regardless of integration tier.
+  </Accordion>
+</AccordionGroup>
+
+## Recommended Rollout Order
 
 <Steps>
-  <Step title="Create a wrapped key">
-    Go to your [CostHawk Dashboard](https://costhawk.ai/dashboard/wrapped-keys), click **Create API Key**, choose a provider, and paste your real API key. CostHawk encrypts it and gives you a wrapped key starting with `ch_sk_`.
+  <Step title="Enable Admin API Sync">
+    Connect Anthropic/OpenAI admin keys for baseline usage and cost coverage.
   </Step>
-  <Step title="Update your code">
-    Change the base URL to point at CostHawk's proxy and use the wrapped key as your API key. That's it — your request format stays identical.
+  <Step title="Keep MCP enabled">
+    Use MCP tools for interactive analysis, savings checks, and alerts workflows.
   </Step>
-  <Step title="Costs tracked automatically">
-    CostHawk forwards your request to the real provider, tracks tokens and cost, then returns the response. You see everything in your dashboard in real-time.
+  <Step title="Add Proxy only where needed">
+    Apply wrapped-key proxy routing to workloads that need enforcement controls.
+  </Step>
+  <Step title="Add OTel for real-time telemetry">
+    Instrument advanced environments that need higher-frequency operational signals.
   </Step>
 </Steps>
 
-## Base URLs
+## Per-Provider Guidance
 
-Use these base URLs in place of the provider's default:
+| Provider | Best Starting Path | Notes |
+|---|---|---|
+| Anthropic | Admin API Sync | Add proxy for hard-stop enforcement and per-request control |
+| OpenAI | Admin API Sync | Add proxy for strict runtime controls |
+| Google Gemini | Proxy | Google lacks equivalent org usage/cost admin APIs for this use case |
 
-| Provider | CostHawk Proxy URL | Replaces |
-|----------|-------------------|----------|
-| OpenAI | `https://costhawk.ai/api/proxy/openai` | `https://api.openai.com/v1/chat/completions` |
-| Anthropic | `https://costhawk.ai/api/proxy/anthropic` | `https://api.anthropic.com/v1/messages` |
-| Google Gemini | `https://costhawk.ai/api/proxy/google` | `https://generativelanguage.googleapis.com/...` |
+## Wrapped Keys Policy
 
-## Authentication
+- Wrapped keys are **not** being removed.
+- Existing wrapped-key users continue to work.
+- New users can still choose wrapped-key onboarding when they need runtime controls.
 
-All providers use the same auth pattern with your wrapped key:
-
-```bash
-Authorization: Bearer ch_sk_your_wrapped_key_here
-```
-
-CostHawk resolves the wrapped key, decrypts your real API key, and forwards the request to the provider with the correct authentication format.
-
-## What Gets Tracked
-
-Every proxied request logs:
-
-- **Provider & model** used
-- **Input & output tokens** (from the provider's response)
-- **Cost** calculated from CostHawk's pricing database
-- **Latency** (round-trip time)
-- **Cache & reasoning tokens** (when applicable)
-- **Attribution** (organization, project, team, environment)
-
-## Response Headers
-
-CostHawk adds cost information to every response:
-
-| Header | Description |
-|--------|------------|
-| `X-CH-Cost-USD` | Total cost of the request |
-| `X-CH-Input-Tokens` | Input tokens used |
-| `X-CH-Output-Tokens` | Output tokens used |
-| `X-CH-Total-Tokens` | Total tokens used |
-| `X-CH-Cost-Input-USD` | Cost of input tokens |
-| `X-CH-Cost-Output-USD` | Cost of output tokens |
-| `X-CH-Spending-Warning` | Warning when approaching spending limits |
-
-## Spending Limits
-
-Wrapped keys support policy-based spending limits:
-
-- **Daily limit** — Max spend per day (e.g., $10/day)
-- **Monthly limit** — Max spend per month (e.g., $500/month)
-- **Hard stop** — Block requests when limit is exceeded (returns `429`)
-- **Soft warning** — Allow requests but add `X-CH-Spending-Warning` header
-
-Configure limits when creating or editing a wrapped key in the dashboard.
-
-## Streaming
-
-CostHawk fully supports streaming responses. When you set `stream: true`, the proxy:
-
-1. Streams the response back to you in real-time (no added latency)
-2. Parses the stream in the background to extract token usage
-3. Logs usage data after the stream completes
-
-Your streaming code works exactly the same as with a direct provider connection.
-
-## Security
-
-- Real API keys are encrypted with AES-256-GCM at rest
-- Keys are only decrypted in memory during request forwarding
-- Wrapped keys can be revoked instantly from the dashboard
-- IP allowlists restrict which addresses can use a key
-- Model restrictions limit which models a key can access
-
-<CardGroup cols={3}>
-  <Card title="OpenAI" icon="bolt" href="/integrations/openai">
-    Integration guide with code examples
+<CardGroup cols={2}>
+  <Card title="Admin API Setup" icon="key" href="/integrations/admin-api">
+    Connect provider admin keys
   </Card>
-  <Card title="Anthropic" icon="message" href="/integrations/anthropic">
-    Integration guide with code examples
+  <Card title="OTel Setup" icon="chart-line" href="/integrations/otel">
+    Real-time telemetry ingestion
   </Card>
-  <Card title="Google Gemini" icon="google" href="/integrations/google">
-    Integration guide with code examples
+  <Card title="OpenAI Proxy" icon="bolt" href="/integrations/openai">
+    Wrapped key + proxy routing
+  </Card>
+  <Card title="Anthropic Proxy" icon="message" href="/integrations/anthropic">
+    Wrapped key + proxy routing
   </Card>
 </CardGroup>

@@ -1,36 +1,41 @@
 ---
 title: "Anthropic Integration"
 sidebarTitle: "Anthropic"
-description: "Route Anthropic API calls through CostHawk to track costs"
+description: "Choose Anthropic Admin API sync for visibility or proxy routing for runtime controls"
 ---
 
-## Quick Setup
+Anthropic has two valid CostHawk integration modes.
 
-<Steps>
-  <Step title="Create a wrapped key">
-    Go to [Dashboard → Integrations](https://costhawk.ai/dashboard/wrapped-keys), click **Create API Key**, select **Anthropic**, and paste your Anthropic API key.
-  </Step>
-  <Step title="Copy your wrapped key">
-    Copy the `ch_sk_...` key that CostHawk generates.
-  </Step>
-  <Step title="Update your code">
-    Change the base URL and API key as shown below.
-  </Step>
-</Steps>
+## Mode A: Admin API Sync (Recommended start)
+
+Use an Anthropic Admin key (`sk-ant-admin-...`) for organization-level reporting with minimal setup.
+
+- Endpoint coverage:
+  - `/v1/organizations/usage_report/messages`
+  - `/v1/organizations/cost_report`
+  - `/v1/organizations/usage_report/claude_code`
+- No app code changes required
+- Best for baseline visibility and reporting
+
+<Card title="Admin API Setup" icon="key" href="/integrations/admin-api">
+  Use this if your priority is fast org-level visibility.
+</Card>
+
+## Mode B: Proxy + Wrapped Key (Advanced controls)
+
+Use wrapped keys when you need runtime enforcement (hard limits, attribution, policy controls).
 
 <Warning>
-  Use a standard Anthropic API key (`sk-ant-...`) for inference traffic. Admin keys (`sk-ant-admin-...`) are for organization administration/reporting APIs, not normal Claude inference via proxy.
+  For proxy traffic, use a standard Anthropic inference key (`sk-ant-...`). Admin keys are for reporting/admin APIs and are not inference credentials.
 </Warning>
 
-## Proxy URL
+### Proxy URL
 
 ```
 POST https://costhawk.ai/api/proxy/anthropic
 ```
 
 This replaces `https://api.anthropic.com/v1/messages`.
-
-## Code Examples
 
 ### Python (Anthropic SDK)
 
@@ -45,17 +50,11 @@ client = anthropic.Anthropic(
 message = client.messages.create(
     model="claude-sonnet-4-5-20250929",
     max_tokens=1024,
-    messages=[
-        {"role": "user", "content": "Hello, Claude!"}
-    ]
+    messages=[{"role": "user", "content": "Hello, Claude!"}],
 )
 
 print(message.content[0].text)
 ```
-
-<Note>
-  The Anthropic SDK appends `/v1/messages` to the base URL. Set `base_url` to `https://costhawk.ai/api/proxy/anthropic` and the SDK handles the rest.
-</Note>
 
 ### Node.js (Anthropic SDK)
 
@@ -70,9 +69,7 @@ const client = new Anthropic({
 const message = await client.messages.create({
   model: "claude-sonnet-4-5-20250929",
   max_tokens: 1024,
-  messages: [
-    { role: "user", content: "Hello, Claude!" }
-  ],
+  messages: [{ role: "user", content: "Hello, Claude!" }],
 });
 
 console.log(message.content[0].text);
@@ -87,59 +84,16 @@ curl -X POST https://costhawk.ai/api/proxy/anthropic \
   -d '{
     "model": "claude-sonnet-4-5-20250929",
     "max_tokens": 1024,
-    "messages": [
-      {"role": "user", "content": "Hello, Claude!"}
-    ]
+    "messages": [{"role": "user", "content": "Hello, Claude!"}]
   }'
 ```
 
 <Note>
-  When calling the proxy directly (curl/fetch), use `Authorization: Bearer` — CostHawk handles converting this to the `x-api-key` header that Anthropic expects.
+  When calling proxy directly, always use `Authorization: Bearer ch_sk_...`.
 </Note>
 
-### Streaming
+## Recommended Pattern
 
-```python
-import anthropic
-
-client = anthropic.Anthropic(
-    api_key="ch_sk_your_wrapped_key_here",
-    base_url="https://costhawk.ai/api/proxy/anthropic",
-)
-
-with client.messages.stream(
-    model="claude-sonnet-4-5-20250929",
-    max_tokens=1024,
-    messages=[
-        {"role": "user", "content": "Write a haiku about APIs"}
-    ],
-) as stream:
-    for text in stream.text_stream:
-        print(text, end="")
-```
-
-## Supported Models
-
-All Anthropic models work through the proxy, including:
-
-- `claude-opus-4-6`
-- `claude-sonnet-4-5-20250929`
-- `claude-haiku-4-5-20251001`
-
-## Supported Endpoint
-
-The proxy currently supports the **Messages** endpoint (`/v1/messages`). This is the primary Anthropic API endpoint.
-
-## Environment Variables
-
-```bash
-# .env
-ANTHROPIC_API_KEY=ch_sk_your_wrapped_key_here
-ANTHROPIC_BASE_URL=https://costhawk.ai/api/proxy/anthropic
-```
-
-```python
-# The Anthropic SDK reads ANTHROPIC_API_KEY automatically
-import anthropic
-client = anthropic.Anthropic()
-```
+1. Start with Admin API sync for immediate reporting coverage.
+2. Keep MCP enabled for assistant-native analytics workflows.
+3. Add proxy routing only for workloads that need enforcement controls.

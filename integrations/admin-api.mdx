@@ -1,0 +1,68 @@
+---
+title: "Admin API Sync"
+sidebarTitle: "Admin API"
+description: "Connect Anthropic/OpenAI admin APIs for low-friction org-level cost visibility"
+---
+
+Admin API sync is the fastest path to organization-wide cost visibility.
+
+It gives you aggregate usage and cost data without changing your application code.
+
+<Card title="MCP Still Supported" icon="terminal" href="/mcp-server/overview">
+  MCP is not being removed. Keep using MCP tools for local workflows while Admin API sync handles org-level provider reporting.
+</Card>
+
+## When To Use This
+
+- You want quick visibility with minimal setup
+- You manage usage for a team or organization
+- You do not need per-request hard-stop enforcement yet
+
+## What You Get
+
+- Anthropic usage buckets (`/v1/organizations/usage_report/messages`)
+- Anthropic cost buckets (`/v1/organizations/cost_report`)
+- Anthropic Claude Code analytics (`/v1/organizations/usage_report/claude_code`)
+- OpenAI usage buckets (`/v1/organization/usage/completions`)
+- OpenAI daily costs (`/v1/organization/costs`)
+
+## Setup
+
+<Steps>
+  <Step title="Create provider admin keys">
+    Create an Anthropic Admin key (`sk-ant-admin-...`) and an OpenAI organization Admin key in each provider console.
+  </Step>
+  <Step title="Connect keys in CostHawk">
+    In CostHawk, add each connection under Integrations/Connections and run a connection test.
+  </Step>
+  <Step title="Wait for first sync">
+    Initial sync usually appears within 5 minutes. Cost endpoints are daily-granularity by provider design.
+  </Step>
+</Steps>
+
+## Sync Cadence
+
+- Usage endpoints: every 5 minutes
+- Cost endpoints: every 5 minutes (daily buckets)
+- Claude Code analytics: hourly
+
+## Security Model
+
+- Admin keys are encrypted at rest
+- Plaintext keys are never returned after creation
+- Connection list only shows fingerprint + provider org metadata
+- Connection lifecycle actions are audit logged
+
+## What Admin API Sync Does Not Replace
+
+- **Hard spending limits / request blocking**: use proxy + wrapped keys
+- **Google Gemini real-time coverage**: use proxy (Google has no equivalent usage API)
+
+<CardGroup cols={2}>
+  <Card title="Integration Overview" icon="layers" href="/integrations/overview">
+    Compare Admin API, OTel, and Proxy paths
+  </Card>
+  <Card title="Google Gemini Proxy" icon="google" href="/integrations/google">
+    Required path for Google real-time tracking
+  </Card>
+</CardGroup>

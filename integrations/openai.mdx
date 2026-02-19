@@ -1,36 +1,40 @@
 ---
 title: "OpenAI Integration"
 sidebarTitle: "OpenAI"
-description: "Route OpenAI API calls through CostHawk to track costs"
+description: "Use OpenAI Admin API sync for visibility, and wrapped-key proxy routing for runtime controls"
 ---
 
-## Quick Setup
+OpenAI supports two CostHawk integration modes.
 
-<Steps>
-  <Step title="Create a wrapped key">
-    Go to [Dashboard → Integrations](https://costhawk.ai/dashboard/wrapped-keys), click **Create API Key**, select **OpenAI**, and paste your OpenAI API key.
-  </Step>
-  <Step title="Copy your wrapped key">
-    Copy the `ch_sk_...` key that CostHawk generates. This is what you'll use in your code.
-  </Step>
-  <Step title="Update your code">
-    Change the base URL and API key as shown below.
-  </Step>
-</Steps>
+## Mode A: Admin API Sync (Recommended start)
+
+Use an OpenAI organization admin key for low-friction reporting.
+
+- Endpoint coverage:
+  - `/v1/organization/usage/completions`
+  - `/v1/organization/costs`
+- No app code changes required
+- Best for quick organization-wide visibility
+
+<Card title="Admin API Setup" icon="key" href="/integrations/admin-api">
+  Use this first for reporting coverage.
+</Card>
+
+## Mode B: Proxy + Wrapped Key (Advanced controls)
+
+Use proxy routing when you need strict runtime controls and enforcement.
 
 <Warning>
-  Use an inference-capable OpenAI key. `Read Only` keys cannot run chat completions, so wrapped-key proxy tracking will fail.
+  Wrapped-key proxy traffic requires inference-capable provider keys. Read-only keys cannot execute model requests.
 </Warning>
 
-## Proxy URL
+### Proxy URL
 
 ```
 POST https://costhawk.ai/api/proxy/openai
 ```
 
 This replaces `https://api.openai.com/v1/chat/completions`.
-
-## Code Examples
 
 ### Python (OpenAI SDK)
 
@@ -44,17 +48,11 @@ client = OpenAI(
 
 response = client.chat.completions.create(
     model="gpt-4.1",
-    messages=[
-        {"role": "user", "content": "Hello, world!"}
-    ]
+    messages=[{"role": "user", "content": "Hello, world!"}]
 )
 
 print(response.choices[0].message.content)
 ```
-
-<Note>
-  The OpenAI SDK appends `/chat/completions` to the base URL. Set `base_url` to `https://costhawk.ai/api/proxy/openai` and the SDK handles the rest.
-</Note>
 
 ### Node.js (OpenAI SDK)
 
@@ -68,9 +66,7 @@ const client = new OpenAI({
 
 const response = await client.chat.completions.create({
   model: "gpt-4.1",
-  messages: [
-    { role: "user", content: "Hello, world!" }
-  ],
+  messages: [{ role: "user", content: "Hello, world!" }],
 });
 
 console.log(response.choices[0].message.content);
@@ -84,59 +80,12 @@ curl -X POST https://costhawk.ai/api/proxy/openai \
   -H "Authorization: Bearer ch_sk_your_wrapped_key_here" \
   -d '{
     "model": "gpt-4.1",
-    "messages": [
-      {"role": "user", "content": "Hello, world!"}
-    ]
+    "messages": [{"role": "user", "content": "Hello, world!"}]
   }'
 ```
 
-### Streaming
+## Recommended Pattern
 
-```python
-from openai import OpenAI
-
-client = OpenAI(
-    api_key="ch_sk_your_wrapped_key_here",
-    base_url="https://costhawk.ai/api/proxy/openai",
-)
-
-stream = client.chat.completions.create(
-    model="gpt-4.1",
-    messages=[
-        {"role": "user", "content": "Write a haiku about APIs"}
-    ],
-    stream=True,
-)
-
-for chunk in stream:
-    if chunk.choices[0].delta.content:
-        print(chunk.choices[0].delta.content, end="")
-```
-
-## Supported Models
-
-All OpenAI chat completion models work through the proxy, including:
-
-- `gpt-4.1`, `gpt-4.1-mini`, `gpt-4.1-nano`
-- `gpt-4o`, `gpt-4o-mini`
-- `o3`, `o3-mini`, `o4-mini`
-
-## Supported Endpoint
-
-The proxy currently supports the **Chat Completions** endpoint (`/v1/chat/completions`). This covers the vast majority of OpenAI API usage.
-
-## Environment Variables
-
-For production deployments, use environment variables instead of hardcoding keys:
-
-```bash
-# .env
-OPENAI_API_KEY=ch_sk_your_wrapped_key_here
-OPENAI_BASE_URL=https://costhawk.ai/api/proxy/openai
-```
-
-```python
-# No code changes needed — the OpenAI SDK reads these automatically
-from openai import OpenAI
-client = OpenAI()
-```
+1. Start with Admin API sync for baseline visibility.
+2. Keep MCP enabled for assistant-native analysis and operations.
+3. Add proxy routing for workloads that need policy enforcement or hard-stop limits.

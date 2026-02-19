@@ -11,9 +11,14 @@ description: "Track, monitor, and optimize your AI API costs across all provider
 
 ## What is CostHawk?
 
-CostHawk is an AI API cost monitoring platform that helps developers and teams track their spend across multiple providers like OpenAI, Anthropic, Google, and more.
+CostHawk is an AI cost platform for teams using OpenAI, Anthropic, Google, and coding assistants.
 
-Whether you're using Claude Max, OpenAI Pro, or pay-as-you-go API access, CostHawk gives you visibility into your usage and helps you understand if your flat-rate subscriptions are actually saving you money.
+Use it in progressive depth:
+
+- Admin API sync for low-friction org reporting
+- OTel for real-time telemetry
+- Proxy + wrapped keys for hard-stop enforcement
+- MCP for assistant-native workflows (fully supported)
 
 ## Key Features
 
@@ -39,19 +44,18 @@ Whether you're using Claude Max, OpenAI Pro, or pay-as-you-go API access, CostHa
   >
     Get notified about cost spikes, budget warnings, and unusual activity.
   </Card>
-  <Card
-    title="API Proxy"
-    icon="shuffle"
-    href="/integrations/overview"
-  >
-    Route API calls through CostHawk to track costs from any application automatically.
+  <Card title="Admin API Sync" icon="key" href="/integrations/admin-api">
+    Connect provider admin keys to ingest org-level usage and costs quickly.
+  </Card>
+  <Card title="API Proxy Controls" icon="shuffle" href="/integrations/overview">
+    Add wrapped-key routing for runtime controls and hard spending limits.
   </Card>
   <Card
     title="MCP Server"
     icon="terminal"
     href="/mcp-server/overview"
   >
-    Query your CostHawk data directly from Claude Code or Claude Desktop.
+    Query your CostHawk data directly from Claude Code, Claude Desktop, or Codex workflows.
   </Card>
   <Card
     title="Trust & Privacy"
@@ -64,16 +68,16 @@ Whether you're using Claude Max, OpenAI Pro, or pay-as-you-go API access, CostHa
 
 ## Quick Start
 
-Get started with CostHawk in under 5 minutes:
+Get started in under 5 minutes:
 
 <Steps>
-  <Step title="Join the Waitlist">
-    Sign up at [costhawk.ai](https://costhawk.ai) to request early access.
+  <Step title="Choose your path">
+    Start with <a href="/integrations/admin-api">Admin API Sync</a> for quick visibility, then layer on Proxy/OTel as needed.
   </Step>
-  <Step title="Get Your Access Token">
-    Once approved, go to **Settings → Developer → Create Token** in your dashboard.
+  <Step title="Enable MCP for assistant workflows">
+    Install CostHawk MCP so you can query usage/savings directly from your coding assistant.
   </Step>
-  <Step title="Install with Auto-Sync">
+  <Step title="Install MCP with Auto-Sync (optional but recommended)">
     **macOS/Linux:**
     ```bash
     claude mcp add -s user \
@@ -88,18 +92,19 @@ Get started with CostHawk in under 5 minutes:
     ```
     The setup wizard will prompt for your API key and enable auto-sync.
   </Step>
-  <Step title="Start Tracking">
-    Restart Claude Code, then ask: "What's my AI API usage this month?"
+  <Step title="Start tracking">
+    Restart your MCP host, then ask: "What's my AI API usage this month?"
   </Step>
 </Steps>
 
 ## Why CostHawk?
 
-- **API proxy** - Route API calls through CostHawk and track per-request costs automatically
+- **Admin API sync** - Pull provider usage/cost data with minimal setup
+- **API proxy** - Add per-request enforcement and hard-stop controls
 - **Multi-provider support** - Track OpenAI, Anthropic, Google, and more in one place
 - **Flat-rate savings analysis** - Know if Claude Max or OpenAI Pro is worth it for you
 - **Spending limits** - Set daily/monthly budgets with hard stops to prevent runaway costs
-- **MCP integration** - Query your costs directly from Claude Code
+- **MCP integration** - Query your costs directly from assistants (fully supported)
 - **Real-time alerts** - Never be surprised by an API bill again
 - **Privacy-first design** - Local parsing, no prompt content, preview before upload
 - **Developer-first** - Built by developers, for developers

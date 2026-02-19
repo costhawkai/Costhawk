@@ -5,16 +5,45 @@ description: "Get up and running with CostHawk in 5 minutes"
 
 ## Choose Your Integration
 
-CostHawk offers two ways to track your AI API costs:
+CostHawk supports three integration paths. Start with the one that matches your use case.
 
-<CardGroup cols={2}>
-  <Card title="MCP Server" icon="robot" href="#mcp-server-setup">
-    For **Claude Code & Claude Desktop** users. Syncs your local usage data automatically — no code changes needed.
+<CardGroup cols={3}>
+  <Card title="Admin API Sync" icon="key" href="/integrations/admin-api">
+    **Recommended start** for teams. Paste provider admin keys and get org-level usage/cost visibility with no app code changes.
   </Card>
-  <Card title="API Proxy" icon="shuffle" href="/integrations/overview">
-    For **any application** calling OpenAI, Anthropic, or Google APIs. Change your base URL and every call is tracked with per-request cost data.
+  <Card title="MCP Server" icon="robot" href="#mcp-server-setup">
+    For **Claude Code / Claude Desktop / Codex workflows**. Keep MCP enabled for assistant-native queries and local usage operations.
+  </Card>
+  <Card title="Proxy + Wrapped Keys" icon="shuffle" href="/integrations/overview">
+    Advanced runtime controls: per-request attribution, hard-stop limits, and policy enforcement. Fully supported for Google and other proxy-supported providers.
   </Card>
 </CardGroup>
+
+<Info>
+  MCP is fully supported and can run alongside Admin API or Proxy integrations.
+</Info>
+
+---
+
+## Fastest Path: Admin API Sync
+
+If you want visibility quickly, connect provider admin keys first:
+
+<Steps>
+  <Step title="Create provider admin keys">
+    Generate an Anthropic Admin key (`sk-ant-admin-...`) and an OpenAI org admin key.
+  </Step>
+  <Step title="Connect in CostHawk">
+    Add both keys in CostHawk Integrations/Connections.
+  </Step>
+  <Step title="Wait for first sync">
+    Usage appears within minutes; provider cost endpoints are daily by design.
+  </Step>
+</Steps>
+
+<Card title="Admin API Guide" icon="key" href="/integrations/admin-api">
+  Full setup details, security model, and sync behavior.
+</Card>
 
 ---
 

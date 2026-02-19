@@ -1,0 +1,63 @@
+---
+title: "OTel Receiver"
+sidebarTitle: "OTel"
+description: "Send real-time coding telemetry to CostHawk via OTLP"
+---
+
+Use OTel when you want near real-time coding telemetry in addition to provider admin/cost APIs.
+
+Claude Code and Codex CLI are the primary use cases here: both can export OTLP telemetry when these environment variables are set in your tool/runtime config.
+
+## Endpoint
+
+Set your exporter endpoint to:
+
+```bash
+OTEL_EXPORTER_OTLP_ENDPOINT=https://ingest.costhawk.ai
+```
+
+Your exporter appends OTLP paths automatically:
+- `/v1/metrics`
+- `/v1/logs`
+- `/v1/traces` (accepted; trace storage can be enabled later)
+
+## Authentication
+
+Use a CostHawk ingest key in OTLP headers:
+
+```bash
+OTEL_EXPORTER_OTLP_HEADERS="x-costhawk-key=YOUR_INGEST_KEY"
+OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+```
+
+The key should include the `otel:ingest` scope.
+
+## Example Configuration
+
+```bash
+export OTEL_EXPORTER_OTLP_ENDPOINT=https://ingest.costhawk.ai
+export OTEL_EXPORTER_OTLP_HEADERS="x-costhawk-key=ch_sk_..."
+export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+```
+
+## Best Practices
+
+- Use a dedicated ingest key per environment (dev/staging/prod)
+- Rotate ingest keys periodically
+- Keep MCP enabled for interactive queries in Claude Code/Codex
+- Use Admin API sync for provider-level billing truth; use OTel for real-time activity signals
+
+## Common Troubleshooting
+
+- `401 Unauthorized`: invalid/missing `x-costhawk-key`
+- `415 Unsupported Media Type`: exporter not sending OTLP protobuf/json
+- No events in dashboard: verify endpoint is `https://ingest.costhawk.ai` (no extra `/v1`)
+
+<CardGroup cols={2}>
+  <Card title="Admin API Sync" icon="key" href="/integrations/admin-api">
+    Low-friction org-level cost visibility
+  </Card>
+  <Card title="MCP Operations" icon="terminal" href="/mcp-server/operations">
+    Verify local MCP + auto-sync health
+  </Card>
+</CardGroup>
