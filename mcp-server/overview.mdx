@@ -50,21 +50,18 @@ This prints all file paths the MCP server would access without making any networ
 <Tabs>
   <Tab title="macOS/Linux">
     ```bash
-    claude mcp add -s user \
-      -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
-      -e COSTHAWK_AUTO_SYNC=true \
-      costhawk -- npx --yes costhawk@latest
+    npm exec --yes costhawk@latest -- --login
     ```
   </Tab>
   <Tab title="Windows">
     ```powershell
-    npx --yes costhawk@latest -- --setup
+    npm exec --yes costhawk@latest -- --login
     ```
-    The setup wizard handles everything automatically.
+    The login flow handles approval + setup automatically.
   </Tab>
 </Tabs>
 
-Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer**.
+Default login token is hybrid (`mcp:read`, `mcp:write`, `otel:ingest`), so it also works for optional OTel ingestion.
 
 After installation, restart Claude Code to load the MCP server.
 

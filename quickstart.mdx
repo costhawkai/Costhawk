@@ -54,51 +54,23 @@ If you want visibility quickly, connect provider admin keys first:
 - A CostHawk account (join the [waitlist](https://costhawk.ai) if you don't have one)
 - Claude Code or Claude Desktop installed
 
-## Step 1: Get Your Access Token
+## Step 1: Browser Login (Recommended)
 
-1. Log into your [CostHawk dashboard](https://costhawk.ai/dashboard)
-2. Navigate to **Settings → Developer**
-3. Click **Create Token**
-4. Copy the token (you'll only see it once)
+Run:
 
-<Warning>
-  Keep your access token secret. Never commit it to version control or share it publicly.
-</Warning>
+```bash
+npm exec --yes costhawk@latest -- --login
+```
 
-## Step 2: Add to Claude Code
+This opens your browser, asks you to approve login, then writes MCP config automatically.
+Default login token scopes are:
+- `mcp:read`
+- `mcp:write`
+- `otel:ingest` (same token can be reused for optional OTel)
 
-<Tabs>
-  <Tab title="macOS/Linux">
-    The fastest way to get started is with the one-liner command:
+## Step 2: Restart Claude Code
 
-    <CodeGroup>
-
-    ```bash Global (All Projects)
-    claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npx --yes costhawk@latest
-    ```
-
-    ```bash Current Project Only
-    claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npx --yes costhawk@latest
-    ```
-
-    </CodeGroup>
-
-    Replace `YOUR_TOKEN_HERE` with your access token from Step 1.
-  </Tab>
-  <Tab title="Windows">
-    Run the setup wizard which handles everything automatically:
-
-    ```powershell
-    npx --yes costhawk@latest -- --setup
-    ```
-
-    This will prompt for your API key and configure everything for you.
-
-    <Warning>
-      The `claude mcp add` command has argument parsing issues on Windows. Use the setup wizard instead.
-    </Warning>
-  </Tab>
-</Tabs>
+After login/setup, restart Claude Code so new tools load.
 
 ### OpenCode (opencode.ai)
 
@@ -126,14 +98,10 @@ If you also use Claude Code or the OpenAI Codex CLI on this machine, you can ena
 Prefer a guided setup? Run:
 
 ```bash
-npm exec --yes costhawk@latest -- --setup --opencode --no-claude
+npm exec --yes costhawk@latest -- --login --opencode --no-claude
 ```
 
-## Step 3: Restart Claude Code
-
-After adding the MCP server, restart Claude Code to load the new tools.
-
-## Step 4: Run Self-Test (Required)
+## Step 3: Run Self-Test (Required)
 
 Run:
 
@@ -150,7 +118,7 @@ Confirm:
 
 If `local.codexDir` is `false` and you use a custom Codex path, set `COSTHAWK_CODEX_SESSIONS_DIR` in MCP env.
 
-## Step 5: Start Using CostHawk
+## Step 4: Start Using CostHawk
 
 You can now ask Claude about your API costs:
 
@@ -177,6 +145,20 @@ You can now ask Claude about your API costs:
 </Card>
 
 ## Alternative: Manual Configuration
+
+If you cannot use browser login, create a token in **Settings → Developer** and use manual token mode.
+
+<CodeGroup>
+
+```bash Global (All Projects)
+claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npm exec --yes costhawk@latest
+```
+
+```bash Current Project Only
+claude mcp add -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npm exec --yes costhawk@latest
+```
+
+</CodeGroup>
 
 If you prefer to configure manually, add this to your MCP config file:
 

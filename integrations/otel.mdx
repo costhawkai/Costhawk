@@ -23,20 +23,26 @@ Your exporter appends OTLP paths automatically:
 
 ## Authentication
 
-Use a CostHawk ingest key in OTLP headers:
+Use a CostHawk token in OTLP headers:
 
 ```bash
-OTEL_EXPORTER_OTLP_HEADERS="x-costhawk-key=YOUR_INGEST_KEY"
+OTEL_EXPORTER_OTLP_HEADERS="x-costhawk-key=YOUR_HYBRID_TOKEN"
 OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 ```
 
-The key should include the `otel:ingest` scope.
+The token must include `otel:ingest`. If you installed MCP with:
+
+```bash
+npm exec --yes costhawk@latest -- --login
+```
+
+you already have a hybrid token with `otel:ingest` included.
 
 ## Example Configuration
 
 ```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=https://ingest.costhawk.ai
-export OTEL_EXPORTER_OTLP_HEADERS="x-costhawk-key=ch_sk_..."
+export OTEL_EXPORTER_OTLP_HEADERS="x-costhawk-key=YOUR_HYBRID_TOKEN"
 export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
 ```
 

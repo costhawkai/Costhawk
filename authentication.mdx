@@ -7,6 +7,14 @@ description: "How to authenticate with the CostHawk API and MCP server"
 
 CostHawk uses access tokens to authenticate requests to the API and MCP server. Tokens are scoped to your account and can be created and revoked from your dashboard.
 
+For MCP users, the recommended path is browser login:
+
+```bash
+npm exec --yes costhawk@latest -- --login
+```
+
+That flow creates a token and configures MCP automatically.
+
 ### Creating a Token
 
 1. Go to your [CostHawk dashboard](https://costhawk.ai/dashboard)

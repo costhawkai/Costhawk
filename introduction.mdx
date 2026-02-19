@@ -78,19 +78,11 @@ Get started in under 5 minutes:
     Install CostHawk MCP so you can query usage/savings directly from your coding assistant.
   </Step>
   <Step title="Install MCP with Auto-Sync (optional but recommended)">
-    **macOS/Linux:**
+    **All platforms (recommended):**
     ```bash
-    claude mcp add -s user \
-      -e COSTHAWK_API_KEY=YOUR_TOKEN \
-      -e COSTHAWK_AUTO_SYNC=true \
-      costhawk -- npx --yes costhawk@latest
+    npm exec --yes costhawk@latest -- --login
     ```
-
-    **Windows:**
-    ```powershell
-    npx --yes costhawk@latest -- --setup
-    ```
-    The setup wizard will prompt for your API key and enable auto-sync.
+    This handles browser approval + setup automatically.
   </Step>
   <Step title="Start tracking">
     Restart your MCP host, then ask: "What's my AI API usage this month?"

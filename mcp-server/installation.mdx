@@ -7,51 +7,27 @@ description: "Install the CostHawk MCP server for Claude Code and Claude Desktop
 
 ### macOS / Linux
 
-One command to install CostHawk with auto-sync enabled:
+Recommended command:
 
 ```bash
-claude mcp add -s user \
-  -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
-  -e COSTHAWK_AUTO_SYNC=true \
-  costhawk -- npx --yes costhawk@latest
+npm exec --yes costhawk@latest -- --login
 ```
 
-Replace `YOUR_TOKEN_HERE` with your access token from **Settings → Developer** in your CostHawk dashboard.
+This opens browser approval and writes MCP config automatically.
 
 ### Windows
 
-<Warning>
-  The `claude mcp add` command has argument parsing issues on Windows. Use the **automated setup** instead.
-</Warning>
-
-Run the setup wizard:
+Use the same login flow:
 
 ```powershell
-npx --yes costhawk@latest -- --setup
+npm exec --yes costhawk@latest -- --login
 ```
 
-This will:
-1. Prompt for your API key
-2. Auto-detect your config file location
-3. Create or update your MCP configuration
-4. Enable auto-sync automatically
+### What Login Creates
 
-**Or manually edit** `%USERPROFILE%\.claude\.mcp.json`:
-
-```json
-    {
-      "mcpServers": {
-        "costhawk": {
-          "command": "npx",
-          "args": ["--yes", "costhawk@latest"],
-          "env": {
-            "COSTHAWK_API_KEY": "YOUR_TOKEN_HERE",
-            "COSTHAWK_AUTO_SYNC": "true"
-          }
-        }
-  }
-}
-```
+- One hybrid token with scopes: `mcp:read`, `mcp:write`, `otel:ingest`
+- Claude MCP config written automatically
+- Optional OpenCode config if selected in setup prompts
 
 ---
 
@@ -84,13 +60,17 @@ Then restart Claude Code and ask:
 
 ## Alternative: --setup Command (All Platforms)
 
-If you prefer an interactive setup on any platform:
+If you already have a token and want token mode directly:
 
 ```bash
-npx --yes costhawk@latest -- --setup
+npm exec --yes costhawk@latest -- --setup --api-key YOUR_TOKEN_HERE --auto-sync --codex-sync
 ```
 
-This works on macOS, Linux, and Windows.
+Or configure manually with `claude mcp add`:
+
+```bash
+claude mcp add -s user -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE -e COSTHAWK_AUTO_SYNC=true costhawk -- npm exec --yes costhawk@latest
+```
 
 ---
 
@@ -120,7 +100,7 @@ If you also use Claude Code or the OpenAI Codex CLI on this machine, you can ena
 Prefer a guided setup? Run:
 
 ```bash
-npm exec --yes costhawk@latest -- --setup --opencode --no-claude
+npm exec --yes costhawk@latest -- --login --opencode --no-claude
 ```
 
 ---
@@ -136,7 +116,7 @@ If you want to sync Claude Code usage but **not** Codex CLI, add the extra env v
       -e COSTHAWK_API_KEY=YOUR_TOKEN_HERE \
       -e COSTHAWK_AUTO_SYNC=true \
       -e COSTHAWK_CODEX_AUTO_SYNC=false \
-      costhawk -- npx --yes costhawk@latest
+      costhawk -- npm exec --yes costhawk@latest
     ```
   </Tab>
   <Tab title="Windows (manual)">
@@ -267,22 +247,7 @@ Run this command to see all files CostHawk would read:
 npm exec --yes costhawk@latest -- --what-we-read
 ```
 
-**Output example:**
-```
-CostHawk MCP Server v1.3.7 - Files We Access
-
-Claude Code:
-  ~/.claude/projects/*/conversations.json
-  ~/.claude/projects/*/settings.json
-
-OpenAI Codex:
-  ~/.codex/sessions/**/*.jsonl
-  ~/.config/codex/sessions/**/*.jsonl
-  ~/.local/share/codex/sessions/**/*.jsonl
-
-Note: We only read usage metadata (tokens, models, timestamps).
-We never read your code, prompts, or conversation content.
-```
+The command output lists detected directories and sample files read for local parsing.
 
 ### What Data We Send
 

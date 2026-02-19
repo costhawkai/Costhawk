@@ -21,7 +21,13 @@ Verify these fields:
 - `local.codexDir` should be `true` if a Codex sessions directory is detected
 - `local.claudeCodeDir` should be `true` if Claude Code local logs are present
 
-If `hasApiKey` is `false`, update MCP config with `COSTHAWK_API_KEY` and restart the MCP host.
+If `hasApiKey` is `false`, run:
+
+```bash
+npm exec --yes costhawk@latest -- --login
+```
+
+Then restart the MCP host.
 
 ## 2. How Auto-Sync Actually Works
 
